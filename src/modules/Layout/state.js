@@ -59,6 +59,39 @@ export default {
   rtl: false,
   items: [
     {
+      title: 'Principal',
+      icon: 'mdi-view-dashboard',
+      to: '/principal'
+    },
+    {
+      title: 'Configuración',
+      icon: 'mdi-cog-outline',
+      items: [
+        {
+          title: 'Usuarios',
+          icon: 'mdi-account',
+          to: '/configuracion/usuarios'
+        },
+        {
+          title: 'Roles',
+          icon: 'mdi-key',
+          to: '/configuracion/roles'
+        },
+        {
+          title: 'Empresas',
+          icon: 'mdi-align-vertical-bottom',
+          to: '/configuracion/empresas'
+        },
+        {
+          title: 'Modulos',
+          icon: 'mdi-application-brackets-outline',
+          to: '/configuracion/modulos'
+        }
+      ]
+    }
+  ]
+  /* items: [
+    {
       title: 'Dashboard',
       icon: 'mdi-view-dashboard',
       to: '/'
@@ -94,4 +127,5 @@ export default {
       to: '/components/notifications/'
     }
   ]
+  */
 }
