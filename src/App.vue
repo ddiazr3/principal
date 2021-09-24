@@ -9,7 +9,6 @@
                  <Header></Header>
                  <Nav></Nav>
                  <Contentenido></Contentenido>
-                 <Footer/>
                </v-container>
             </v-main>
           </v-app>
@@ -21,14 +20,12 @@ import '@/styles/overrides.sass'
 import Header from '@/components/Layout/Header'
 import Nav from '@/components/Layout/Nav'
 import Contentenido from '@/components/Layout/Content'
-import Footer from './components/Layout/Footer.vue'
 
 export default {
   components: {
     Header,
     Nav,
-    Contentenido,
-    Footer
+    Contentenido
   }
 }
 </script>

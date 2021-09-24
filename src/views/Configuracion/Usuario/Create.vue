@@ -15,6 +15,19 @@
         >
           <template #title>
             Crear Perfil — <small class="text-body-1">Complete todos los datos</small>
+            <btn
+              color="blue"
+              fab
+              small
+              absolute
+              right
+              link
+              exact
+              to="/configuracion/usuarios"
+              texto="Regresar"
+              textoIcon="mdi-arrow-left-thick"
+            >
+            </btn>
           </template>
 
           <v-form>
@@ -116,10 +129,10 @@
   </v-container>
 </template>
 <script>
-import Card from '../../components/Layout/App/Card.vue'
-import MaterialCard from '../../components/view/MaterialCard.vue'
+import Btn from '../../../components/Layout/App/Btn.vue'
+import MaterialCard from '../../../components/view/MaterialCard.vue'
 
 export default {
-  components: { MaterialCard, Card }
+  components: { MaterialCard, Btn }
 }
 </script>

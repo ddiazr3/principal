@@ -27,7 +27,6 @@
           </div>
 
           <slot name="heading" />
-
           <div
             v-if="heading"
             class="text-h4 white--text pa-7 v-card--material__title"
@@ -36,7 +35,6 @@
           </div>
         </v-theme-provider>
       </v-sheet>
-
       <div
         v-if="hasTitle"
         :class="fullHeader ? 'pt-4' : 'pl-3'"
@@ -81,7 +79,8 @@ export default {
     icon: String,
     iconSmall: Boolean,
     subtitle: String,
-    title: String
+    title: String,
+    addBtn: []
   },
   components: {
     Card

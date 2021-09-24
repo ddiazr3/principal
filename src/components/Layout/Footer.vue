@@ -5,6 +5,7 @@
     absolute
     app
     inset
+    style="left:0px !important"
   >
     <Link />
   </v-footer>

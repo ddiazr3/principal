@@ -48,10 +48,9 @@ import BarItem from '../App/BarItem.vue'
 export default {
   data: () => ({
     profile: [
-      { title: 'Profile' },
-      { title: 'Settings' },
+      { title: 'Perfil' },
       { divider: true },
-      { title: 'Log out' },
+      { title: 'Salir' }
     ]
   }),
   components: {

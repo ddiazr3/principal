@@ -4,8 +4,14 @@ import Home from '../views/Home.vue'
 import Principal from '../views/Principal.vue'
 
 import Configuracion from '../views/Configuracion/Configuracion.vue'
-import Usuario from '../views/Configuracion/Usuario.vue'
 
+// rutas de usuarios
+import ListUser from '../views/Configuracion/Usuario/List.vue'
+import CreateUser from '../views/Configuracion/Usuario/Create.vue'
+
+// rutas de roles
+import ListRoles from '../views/Configuracion/Roles/List.vue'
+import CreateRoles from '../views/Configuracion/Roles/Create.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -20,11 +26,19 @@ const routes = [
     children: [
       {
         path: 'usuarios',
-        component: Usuario
+        component: ListUser
+      },
+      {
+        path: 'usuarios/create',
+        component: CreateUser
       },
       {
         path: 'roles',
-        component: Home
+        component: ListRoles
+      },
+      {
+        path: 'roles/create',
+        component: CreateRoles
       },
       {
         path: 'empresas',
