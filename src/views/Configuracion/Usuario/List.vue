@@ -160,6 +160,7 @@
 import Btn from '../../../components/Layout/App/Btn.vue'
 import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -190,6 +191,15 @@ export default {
       ]
     }
   },
-  components: { MaterialCard, Btn, Search }
+  components: { MaterialCard, Btn, Search },
+  mounted () {
+    this.getUsuarios()
+  },
+  computed: {
+    ...mapState('usuario', ['usuarios'])
+  },
+  methods: {
+    ...mapActions('usuario', ['getUsuarios'])
+  }
 }
 </script>
