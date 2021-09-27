@@ -1,13 +1,13 @@
 <template>
 <div>
   <v-row>
-    <v-col cols="2" v-if="valoresBuscar.hasOwnProperty('de')">
+    <v-col cols="12" md="2" v-if="valoresBuscar.hasOwnProperty('de')">
       <v-text-field type="date"  v-model="valoresBuscar['de']"></v-text-field>
     </v-col>
-     <v-col cols="2" v-if="valoresBuscar.hasOwnProperty('a')">
+     <v-col cols="12" md="2" v-if="valoresBuscar.hasOwnProperty('a')">
         <v-text-field type="date"  v-model="valoresBuscar['a']"></v-text-field>
      </v-col>
-    <v-col cols="2" v-for="(itm, idx) in items" :key="itm.id">
+    <v-col cols="12" md="2" v-for="(itm, idx) in items" :key="itm.id">
       <v-autocomplete
         :items="itm"
         item-text="name"
@@ -15,38 +15,40 @@
         dense
         filled
         v-model="valoresBuscar['item'+idx]"
-        :label="nameItems[idx]"
+        :label="String(nameItems[idx])"
       ></v-autocomplete>
     </v-col>
     <v-col
-      cols="3"
+     cols="12" md="2"
     >
       <v-text-field v-if="valoresBuscar.hasOwnProperty('search')"
         placeholder="Escribir ..."
-        class="mr-16"
         color="secondary"
         hide-details
         v-model="valoresBuscar['search']"
       >
       </v-text-field>
     </v-col>
-    <v-col cols="1">
-      <v-btn
-        class="mt-n2 ml-n2"
+    <v-col cols="12" md="2">
+      <btn
         fab
         small
         height="44"
         width="44"
-      >
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+        color="blue"
+        texto="Buscar"
+        textoIcon="mdi-magnify"
+         v-on:accion="buscar"
+      ></btn>
     </v-col>
    </v-row>
 </div>
 </template>
 
 <script>
+import Btn from '../App/Btn.vue'
 export default {
+  components: { Btn },
   props: {
     items: {
       type: [],
@@ -59,6 +61,11 @@ export default {
     valoresBuscar: {
       type: Object,
       default: null
+    }
+  },
+  methods: {
+    buscar() {
+      this.$emit('buscar', this.valoresBuscar);
     }
   }
 }

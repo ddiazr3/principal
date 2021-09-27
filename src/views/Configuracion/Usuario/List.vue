@@ -31,7 +31,7 @@
             </btn>
           </template>
           <v-container class="py-0">
-            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" >
+            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" v-on:buscar="buscar" >
 
             </search>
             <v-simple-table fixed-header>
@@ -46,11 +46,11 @@
                   </tr>
               </thead>
               <tbody>
-                 <tr>
-                    <td class="text-left">Dany</td>
-                    <td class="text-left">Diaz</td>
-                    <td class="text-left">44877801</td>
-                    <td class="text-left">Fraiajn</td>
+                 <tr v-for="dato in usuarios" :key="dato.id">
+                    <td class="text-left">{{ dato.nombre }}</td>
+                    <td class="text-left">{{ dato.apellido }}</td>
+                    <td class="text-left">{{ dato.direccion }}</td>
+                    <td class="text-left">{{ dato.nombre }}</td>
                     <td class="text-left">
                        <v-chip
                           class="ma-2"
@@ -68,9 +68,11 @@
                         small
                         link
                         exact
-                        to="/configuracion/usuarios/edit/1"
+                        :to="'/configuracion/usuarios/edit/'+dato.id"
                         texto="Editar Usuario"
                         textoIcon="mdi-account-edit"
+                        :idrecibir="dato.id"
+                        v-on:accion="eliminar"
                       >
                       </btn>
                       <btn
@@ -80,6 +82,8 @@
                         texto="Eliminar Usuario"
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
+                         :idrecibir="dato.id"
+                        v-on:accion="eliminar"
                       >
                       </btn>
                       <btn
@@ -89,66 +93,16 @@
                         texto="Activar Usuario"
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
+                         :idrecibir="dato.id"
+                        v-on:accion="eliminar"
                       >
                       </btn>
                     </td>
                   </tr>
-                   <tr>
-                    <td class="text-left">Leny</td>
-                    <td class="text-left">Diaz</td>
-                    <td class="text-left">58403313</td>
-                    <td class="text-left">Cerrito</td>
-                    <td class="text-left">
-                      <v-chip
-                          x-small
-                          color="green"
-                          text-color="white"
-                        >
-                          Compras
-                        </v-chip>
-                        <v-chip style="margin-left:5px"
-                          x-small
-                          color="green"
-                          text-color="white"
-                        >
-                          Ventas
-                        </v-chip>
-                        </td>
-                    <td>
-                      <btn
-                        color="warning"
-                        fab
-                        small
-                        link
-                        exact
-                        to="/configuracion/usuarios/edit/1"
-                        texto="Editar Usuario"
-                        textoIcon="mdi-account-edit"
-                      >
-                      </btn>
-                      <btn
-                        color="error"
-                        fab
-                        small
-                        texto="Eliminar Usuario"
-                        textoIcon="mdi-delete-forever"
-                        margenes="margin-left:5px"
-                      >
-                      </btn>
 
-                      <btn
-                        color="success"
-                        fab
-                        small
-                        texto="Activar Usuario"
-                        textoIcon="mdi-check"
-                        margenes="margin-left:5px"
-                      >
-                      </btn>
-                    </td>
-                  </tr>
               </tbody>
             </v-simple-table>
+            <pagiante :length="totalPage" v-on:cambiopagina="paginacion"></pagiante>
           </v-container>
         </material-card>
       </v-col>
@@ -161,10 +115,13 @@ import Btn from '../../../components/Layout/App/Btn.vue'
 import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
+import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 
 export default {
   data () {
     return {
+      // van a ver itemN porque se utilizan para los select
+      // para search habran N tambiern porque seran los de cajas de texto de busqueda
       valoresBuscar: {
         item0: null,
         search: null
@@ -188,18 +145,34 @@ export default {
       ],
       nameItems: [
         ['Datos']
-      ]
+      ],
     }
   },
-  components: { MaterialCard, Btn, Search },
+  components: { MaterialCard, Btn, Search, Pagiante },
   mounted () {
-    this.getUsuarios()
+    let url = 'page='+this.page
+    this.getUsuarios(url)
   },
   computed: {
-    ...mapState('usuario', ['usuarios'])
+    ...mapState('usuario', ['usuarios', 'totalPage', 'page'])
   },
   methods: {
-    ...mapActions('usuario', ['getUsuarios'])
+    ...mapActions('usuario', ['getUsuarios']),
+    paginacion(val) {
+      if(this.valoresBuscar.item0 != null){
+          var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
+      }else{
+         var url = 'page='+val
+      }
+      this.getUsuarios(url)
+    },
+    buscar(data) {
+      let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
+       this.getUsuarios(url)
+    },
+    eliminar(id){
+      console.log("elimar al ID "+id)
+    }
   }
 }
 </script>

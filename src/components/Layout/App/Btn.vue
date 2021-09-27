@@ -14,8 +14,10 @@
         :exact="exact"
         :to="to"
         :top="top"
+        :disabled="disabled"
         v-bind="attrs"
         v-on="on"
+        @click="buscar"
       >
        <v-icon v-if="textoIcon.length > 0">{{ textoIcon }}</v-icon>
        <v-icon v-if="textoButton.length > 0">{{ textoButton }}</v-icon>
@@ -85,6 +87,23 @@ export default {
     margenes: {
       type: String,
       default: ''
+    },
+    idrecibir: {
+      type: Number,
+      default: 0
+    },
+    disabled: {
+       type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    buscar(){
+      if(this.idrecibir > 0) {
+        this.$emit('accion',  this.idrecibir);
+      }else{
+        this.$emit('accion');
+      }
     }
   }
 }
