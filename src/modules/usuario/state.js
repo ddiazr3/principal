@@ -10,7 +10,8 @@ export default {
         telefono: null,
         direccion: null,
         empresaid: null,
-        rolesid: []
+        rolesid: [],
+        idcrypt : null
     },
     rolesUsuario: [],
     empresasUsuario: [],

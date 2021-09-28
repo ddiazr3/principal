@@ -14,7 +14,9 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            Crear Perfil — <small class="text-body-1">Complete todos los datos</small>
+            <h3 v-if="!$route.params.id ">Crear Perfil </h3>
+            <h3 v-if="$route.params.id">Editar Perfil</h3> —
+            <small class="text-body-1">Complete todos los datos</small>
             <btn
               color="blue"
               fab
@@ -154,7 +156,7 @@
                         color="primary"
                         fab
                         small
-                        texto="Guardar Usuario"
+                        :texto="!$route.params.id ? 'Guardar Usuario' : 'Actualizar Usuario'"
                         textoIcon="mdi-content-save"
                         margenes="margin-left:5px"
                         v-on:accion="guardar"
@@ -169,34 +171,24 @@
         </material-card>
       </v-col>
     </v-row>
-     <v-snackbar
-        v-model="snackbar"
-        :multi-line="true"
-      >
-       Revisar Campos
-
-        <template v-slot:action="{ attrs }">
-          <v-btn
-            color="red"
-            text
-            v-bind="attrs"
-            @click="snackbar = false"
-          >
-            Cerrar
-          </v-btn>
-        </template>
-      </v-snackbar>
+    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
 
 </template>
 <script>
 import Btn from '../../../components/Layout/App/Btn.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import Snackbar from '../../../components/Layout/App/Snackbar'
+import { limpiarUsuario } from '../../../modules/usuario/mutations'
+const msgError = process.env.VUE_APP_MSG_ERROR
 
 export default {
   data: () => ({
     valid: true,
+    snackbar: false,
+    colorSnackbar: "dark",
+    textoSnackbar: null,
     textRules: [
       v => !!v || 'Campo es requerido',
       v => (v && v.length <= 25) || 'Ingrese menos de 25 carcateres'
@@ -218,28 +210,49 @@ export default {
         v => (v && v.length > 0) || 'Debe ingresar al menos uno'
     ],
   }),
-  components: { MaterialCard, Btn },
+  components: { Snackbar, MaterialCard, Btn },
   mounted() {
     this.getCatalogos()
-  },
-  watch: {
-    snackbar: function (val) {
-     this.$store.state.snackbar
+    //console.log("parametro recibido")
+    //console.log(this.$router.params.id)
+    if(this.$route.params.id){
+      this.getUsuario(this.$route.params.id)
     }
   },
   computed: {
     ...mapState('usuario', ['empresasUsuario','rolesUsuario','usuario'])
   },
   methods: {
-    ...mapActions('usuario', ['getCatalogos','guardarUsuario']),
+    ...mapActions('usuario', ['getCatalogos','guardarUsuario','getUsuario']),
+    ...mapMutations('usuario', ['limpiarUsuario']),
+
     guardar() {
       this.$refs.form.validate()
-      this.guardarUsuario(this.usuario)
+
+      if(this.valid){
+        this.guardarUsuario(this.usuario)
+          .then((res) => {
+            this.snackbar = true
+            this.colorSnackbar = "success"
+            this.textoSnackbar = "Datos creados con éxito"
+            this.$router.push('/configuracion/usuarios')
+            this.limpiarUsuario()
+          }).catch((error) => {
+          this.snackbar = true
+          this.colorSnackbar = "dark"
+          this.textoSnackbar = msgError
+        })
+      }
 
     },
     validate () {
       this.$refs.form.validate()
     },
+    cerrar(){
+      this.snackbar = false
+      this.colorSnackbar = "dark"
+      this.textoSnackbar = null
+    }
   }
 }
 </script>

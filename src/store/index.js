@@ -6,12 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        snackbar: false
     },
     mutations: {
-        setSnackbar(state, bool) {
-            state.snackbar = bool
-        }
     },
     actions: {},
     modules: {

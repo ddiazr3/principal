@@ -33,6 +33,10 @@ const routes = [
         component: CreateUser
       },
       {
+        path: 'usuarios/edit/:id',
+        component: CreateUser
+      },
+      {
         path: 'roles',
         component: ListRoles
       },

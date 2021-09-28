@@ -68,7 +68,7 @@
                         small
                         link
                         exact
-                        :to="'/configuracion/usuarios/edit/'+dato.id"
+                        :to="'/configuracion/usuarios/edit/'+dato.idcrypt"
                         texto="Editar Usuario"
                         textoIcon="mdi-account-edit"
                         :idrecibir="dato.id"
