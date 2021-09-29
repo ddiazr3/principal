@@ -31,10 +31,30 @@
             </btn>
           </template>
           <v-container class="py-0">
-            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" v-on:buscar="buscar" >
+            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" v-on:buscar="buscar" v-on:limipiar="limipiarBuscador" >
 
             </search>
-            <v-simple-table fixed-header>
+            <btn
+              margenes="margin-bottom: 15px"
+              color="success"
+              fab
+              small
+              texto="Exportar Usuario"
+              textoIcon="mdi-file-excel-box"
+              v-on:accion="exportar"
+            >
+            </btn>
+            <!--btn
+              margenes="margin-bottom: 15px; margin-left: 15px"
+              color="error"
+              fab
+              small
+              texto="Exportar PDF"
+              textoIcon="mdi-file-pdf-box"
+              v-on:accion="exportarPDF"
+            >
+            </btn-->
+            <v-simple-table fixed-header style="height: 525px;">
               <thead>
                   <tr>
                     <th class="text-left">Nombre</th>
@@ -49,16 +69,17 @@
                  <tr v-for="dato in usuarios" :key="dato.id">
                     <td class="text-left">{{ dato.nombre }}</td>
                     <td class="text-left">{{ dato.apellido }}</td>
+                    <td class="text-left">{{ dato.telefono }}</td>
                     <td class="text-left">{{ dato.direccion }}</td>
-                    <td class="text-left">{{ dato.nombre }}</td>
                     <td class="text-left">
                        <v-chip
                           class="ma-2"
                           x-small
                           color="green"
                           text-color="white"
+                          v-for="role in dato.roles" :key="role.id"
                         >
-                          Adminitrador
+                          {{ role.nombre }}
                         </v-chip>
                     </td>
                     <td>
@@ -72,10 +93,10 @@
                         texto="Editar Usuario"
                         textoIcon="mdi-account-edit"
                         :idrecibir="dato.id"
-                        v-on:accion="eliminar"
                       >
                       </btn>
                       <btn
+                        v-if="dato.activo"
                         color="error"
                         fab
                         small
@@ -83,10 +104,11 @@
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
-                        v-on:accion="eliminar"
+                        v-on:accion="eliminar(dato.id)"
                       >
                       </btn>
                       <btn
+                        v-else
                         color="success"
                         fab
                         small
@@ -94,7 +116,7 @@
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
-                        v-on:accion="eliminar"
+                        v-on:accion="activar(dato.id)"
                       >
                       </btn>
                     </td>
@@ -116,6 +138,7 @@ import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
+import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
 
 export default {
   data () {
@@ -157,7 +180,7 @@ export default {
     ...mapState('usuario', ['usuarios', 'totalPage', 'page'])
   },
   methods: {
-    ...mapActions('usuario', ['getUsuarios']),
+    ...mapActions('usuario', ['getUsuarios','eliminarUsuario','activarUsuario','exportarUsuario','exportarUsuarioPDF']),
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
@@ -171,8 +194,65 @@ export default {
        this.getUsuarios(url)
     },
     eliminar(id){
-      console.log("elimar al ID "+id)
+      this.eliminarUsuario(id).
+      then((res) => {
+        let url = 'page='+this.page
+        this.getUsuarios(url)
+      })
+
+    },
+    activar(id){
+      this.activarUsuario(id).
+      then((res) => {
+        let url = 'page='+this.page
+        this.getUsuarios(url)
+      })
+    },
+    limipiarBuscador(){
+      this.valoresBuscar = { item0: null, search: null }
+      let url = 'page='+this.page
+      this.getUsuarios(url)
+    },
+    exportar(){
+      var data = {
+        item0 : null,
+        datobuscar: null,
+        search: null
+      }
+      if(this.valoresBuscar.item0 != null && this.valoresBuscar.search != null){
+        data.search = true
+        data.datobuscar = this.valoresBuscar.search
+        data.item0 = this.valoresBuscar.item0
+      }
+      this.exportarUsuario(data).
+        then((resp) => {
+            var fileURL = window.URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.ms-excel;charset=utf-8'}));
+            var fileLink = document.createElement('a');
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', 'usuarios.xlsx');
+            document.body.appendChild(fileLink);
+            fileLink.click();
+      }).
+        catch((error) => {
+        console.log("reporno del api error")
+        console.log(error)
+      })
     }
+    /*
+      EJEMPLO DE COMO EXPORTAR PDF
+      exportarPDF(){
+        this.exportarUsuarioPDF().
+        then((resp) => {
+          var fileURL = window.URL.createObjectURL(new Blob([resp.data]),{ type: 'application/pdf;charset=utf-8' });
+          var fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', 'usuarios.pdf');
+          document.body.appendChild(fileLink);
+          fileLink.click();
+        }).
+        catch((error) => {
+        })
+    }*/
   }
 }
 </script>

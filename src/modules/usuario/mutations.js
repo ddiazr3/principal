@@ -16,6 +16,7 @@ export function setUsuario(state, usuario ) {
   state.usuario.empresaid = usuario.empresaid
   state.usuario.rolesid = usuario.rolesid
   state.usuario.idcrypt = usuario.idcrypt
+  state.usuario.activo = usuario.activo
 }
 
 export function setCatalogos(state, response) {

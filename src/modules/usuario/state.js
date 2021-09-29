@@ -11,7 +11,8 @@ export default {
         direccion: null,
         empresaid: null,
         rolesid: [],
-        idcrypt : null
+        idcrypt : null,
+        activo: null
     },
     rolesUsuario: [],
     empresasUsuario: [],

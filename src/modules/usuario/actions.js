@@ -36,12 +36,39 @@ export async function getUsuario({ commit }, id) {
 export async function getCatalogos({ commit }) {
 
     const url = process.env.VUE_APP_URL_API + '/api/usuarios/catalogos'
+  commit('setLoading', true, { root: true })
     axios.get(url)
         .then((response) => {
             commit('setCatalogos', response)
+
         })
         .catch((e) => {
             console.log(e)
             console.log(' error ')
-        })
+        }).finally(
+          commit('setLoading', false, { root: true })
+       )
 }
+
+export async function eliminarUsuario({ commit }, id) {
+  const url = process.env.VUE_APP_URL_API + '/api/usuarios/'+id+'/eliminar'
+  return axios.post(url)
+}
+
+export async function activarUsuario({ commit }, id) {
+  const url = process.env.VUE_APP_URL_API + '/api/usuarios/'+id+'/activar'
+  return axios.post(url)
+}
+
+export async function exportarUsuario({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/usuarios/exportar'
+  return axios.post(url, data , { responseType: 'arraybuffer' })
+}
+
+
+/* ejemplo de como exportar documentos PDF
+    export async function exportarUsuarioPDF({ commit }) {
+      const url = process.env.VUE_APP_URL_API + '/api/usuarios/exportarPDF'
+      return axios.post(url, { nombre: "DANY DIAZ"} , { responseType: 'blob'  })
+    }
+*/

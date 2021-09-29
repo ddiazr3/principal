@@ -130,8 +130,9 @@
                   <v-text-field
                     color="purple"
                     label="Dirección"
-                    :rules="textRules"
+                    :rules="textCincuentaRules"
                     v-model="usuario.direccion"
+                    :counter="50"
                   />
                 </v-col>
 
@@ -143,7 +144,7 @@
                     color="purple"
                     label="Telefono"
                     v-model="usuario.telefono"
-                    :rules="textNumberRules"
+                    :rules="textNumberTelRules"
                     :counter="8"
                   />
                 </v-col>
@@ -193,9 +194,18 @@ export default {
       v => !!v || 'Campo es requerido',
       v => (v && v.length <= 25) || 'Ingrese menos de 25 carcateres'
     ],
+    textCincuentaRules: [
+      v => !!v || 'Campo es requerido',
+      v => (v && v.length <= 50) || 'Ingrese menos de 50 carcateres'
+    ],
     textNumberRules:[
       v => !!v || 'Campo es requerido',
-      v => (v && v.length <= 13) || 'Ingrese menos de 13 carcateres',
+      v => (v && v.length <= 13 && v.length >=13) || 'Ingrese 13 digitos',
+      v => /[0-9]/.test(v) || 'El campo es de tipo numerico',
+    ],
+    textNumberTelRules:[
+      v => !!v || 'Campo es requerido',
+      v => (v && v.length <= 8 && v.length >=8) || 'Ingrese 8 digitos',
       v => /[0-9]/.test(v) || 'El campo es de tipo numerico',
     ],
     emailRules: [
@@ -213,10 +223,10 @@ export default {
   components: { Snackbar, MaterialCard, Btn },
   mounted() {
     this.getCatalogos()
-    //console.log("parametro recibido")
-    //console.log(this.$router.params.id)
     if(this.$route.params.id){
       this.getUsuario(this.$route.params.id)
+    }else{
+      this.limpiarUsuario()
     }
   },
   computed: {

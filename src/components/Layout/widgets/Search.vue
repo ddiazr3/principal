@@ -40,6 +40,17 @@
         textoIcon="mdi-magnify"
          v-on:accion="buscar"
       ></btn>
+      <btn
+        margenes="margin-left:5px"
+        fab
+        small
+        height="44"
+        width="44"
+        color="success"
+        texto="Limpiar"
+        textoIcon="mdi-broom"
+        v-on:accion="$emit('limipiar')"
+      ></btn>
     </v-col>
    </v-row>
 </div>
