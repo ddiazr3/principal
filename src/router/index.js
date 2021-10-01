@@ -12,6 +12,8 @@ import CreateUser from '../views/Configuracion/Usuario/Create.vue'
 // rutas de roles
 import ListRoles from '../views/Configuracion/Roles/List.vue'
 import CreateRoles from '../views/Configuracion/Roles/Create.vue'
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -25,6 +27,22 @@ const routes = [
     component: Configuracion,
     children: [
       {
+        path: 'roles',
+        component: ListRoles
+      },
+      {
+        path: 'roles/create',
+        component: CreateRoles
+      },
+      {
+        path: 'roles/edit/:id',
+        component: CreateRoles
+      },
+      {
+        path: 'empresas',
+        component: Home
+      },
+      {
         path: 'usuarios',
         component: ListUser
       },
@@ -35,22 +53,6 @@ const routes = [
       {
         path: 'usuarios/edit/:id',
         component: CreateUser
-      },
-      {
-        path: 'roles',
-        component: ListRoles
-      },
-      {
-        path: 'roles/create',
-        component: CreateRoles
-      },
-      {
-        path: 'empresas',
-        component: Home
-      },
-      {
-        path: 'modulos',
-        component: Home
       }
     ]
   }

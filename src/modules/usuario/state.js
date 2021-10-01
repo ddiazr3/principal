@@ -3,6 +3,7 @@ export default {
     usuarios: [],
     usuario: {
         id: 0,
+         contrasenia : null,
         nombre: null,
         apellido: null,
         correo: null,

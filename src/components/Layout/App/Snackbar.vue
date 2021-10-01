@@ -13,7 +13,7 @@
       <v-btn
         text
         v-bind="attrs"
-        @click="this.$emit('cerrar')"
+        @click="cerrar"
       >
         <v-icon>mdi-minus-circle</v-icon>
       </v-btn>
@@ -23,6 +23,11 @@
 <script>
   import { mapState, mapMutations } from 'vuex'
   export default {
-    props: ['colorSnackbar','textoSnackbar','snackbar']
+    props: ['colorSnackbar','textoSnackbar','snackbar'],
+    methods: {
+      cerrar(){
+        this.$emit('cerrar')
+      }
+    }
   }
 </script>

@@ -151,6 +151,25 @@
 
                 <v-col
                   cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    v-if="!$route.params.id "
+                    color="purple"
+                    :rules="textPassword"
+                    v-model="usuario.contrasenia"
+                    :counter="6"
+                    :type="show2 ? 'text' : 'password'"
+                    name="input-10-2"
+                    class="input-group--focused"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="show2 = !show2"
+
+                  />
+                </v-col>
+
+                <v-col
+                  cols="12"
                   class="text-right"
                 >
                   <btn
@@ -181,7 +200,6 @@ import Btn from '../../../components/Layout/App/Btn.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import Snackbar from '../../../components/Layout/App/Snackbar'
-import { limpiarUsuario } from '../../../modules/usuario/mutations'
 const msgError = process.env.VUE_APP_MSG_ERROR
 
 export default {
@@ -190,6 +208,8 @@ export default {
     snackbar: false,
     colorSnackbar: "dark",
     textoSnackbar: null,
+    show1: true,
+    show2: false,
     textRules: [
       v => !!v || 'Campo es requerido',
       v => (v && v.length <= 25) || 'Ingrese menos de 25 carcateres'
@@ -202,6 +222,10 @@ export default {
       v => !!v || 'Campo es requerido',
       v => (v && v.length <= 13 && v.length >=13) || 'Ingrese 13 digitos',
       v => /[0-9]/.test(v) || 'El campo es de tipo numerico',
+    ],
+    textPassword:[
+      v => !!v || 'Campo es requerido',
+      v => (v && v.length <= 8) || 'Min 8 digitos',
     ],
     textNumberTelRules:[
       v => !!v || 'Campo es requerido',

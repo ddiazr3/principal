@@ -8,6 +8,7 @@ export function setUsuarios(state, response) {
 
 export function setUsuario(state, usuario ) {
   state.usuario.nombre = usuario.nombre
+  state.usuario.contrasenia = usuario.password
   state.usuario.apellido = usuario.apellido
   state.usuario.correo = usuario.correo
   state.usuario.dpi = usuario.dpi
@@ -28,6 +29,7 @@ export function limpiarUsuario(state) {
   state.usuario = {
       id: 0,
       nombre: null,
+    contrasenia : null,
       apellido: null,
       correo: null,
       dpi: null,

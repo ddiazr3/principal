@@ -31,21 +31,23 @@
             </btn>
           </template>
           <v-container class="py-0">
-            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" >
+            <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" v-on:buscar="buscar" v-on:limipiar="limipiarBuscador">
 
             </search>
             <v-simple-table fixed-header>
               <thead>
                   <tr>
                     <th class="text-left">Rol</th>
+                    <th class="text-left">Descripción</th>
                     <th class="text-left">Empresa</th>
                     <th class="text-left">Opciones</th>
                   </tr>
               </thead>
               <tbody>
-                 <tr>
-                    <td class="text-left">Admin</td>
-                    <td class="text-left">Sopor 1</td>
+                 <tr v-for="role in roles" :key="role.id">
+                    <td class="text-left">{{ role.nombre }}</td>
+                   <td class="text-left">{{ role.descripcion }}</td>
+                    <td class="text-left" v-text="role.empresa ? role.empresa.nombre: ' '"></td>
                     <td>
                       <btn
                         color="warning"
@@ -53,7 +55,7 @@
                         small
                         link
                         exact
-                        to="/configuracion/usuarios/edit/1"
+                        :to="'/configuracion/roles/edit/'+role.idcrypt"
                         texto="Editar Rol"
                         textoIcon="mdi-account-edit"
                       >
@@ -65,32 +67,8 @@
                         texto="Eliminar Rol"
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
-                      >
-                      </btn>
-                    </td>
-                  </tr>
-                   <tr>
-                    <td class="text-left">Ventas</td>
-                    <td class="text-left">Sopor 2</td>
-                    <td>
-                      <btn
-                        color="warning"
-                        fab
-                        small
-                        link
-                        exact
-                        to="/configuracion/usuarios/edit/1"
-                        texto="Editar Rol"
-                        textoIcon="mdi-account-edit"
-                      >
-                      </btn>
-                      <btn
-                        color="error"
-                        fab
-                        small
-                        texto="Eliminar Rol"
-                        textoIcon="mdi-delete-forever"
-                        margenes="margin-left:5px"
+                        :idrecibir="role.id"
+                        v-on:accion="eliminar(role.id)"
                       >
                       </btn>
                     </td>
@@ -108,6 +86,7 @@
 import Btn from '../../../components/Layout/App/Btn.vue'
 import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   data () {
@@ -134,6 +113,32 @@ export default {
       ]
     }
   },
-  components: { MaterialCard, Btn, Search }
+  components: { MaterialCard, Btn, Search },
+  mounted () {
+    let url = 'page='+this.page
+    this.getRoles(url);
+  },
+  computed: {
+    ...mapState('roles', ['roles', 'totalPage', 'page'])
+  },
+  methods: {
+    ...mapActions('roles', ['getRoles','eliminarRol']),
+    eliminar(id){
+      this.eliminarRol(id).
+      then((res) => {
+        let url = 'page='+this.page
+        this.getRoles(url)
+      })
+    },
+    buscar(){
+      let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
+      this.getRoles(url)
+    },
+    limipiarBuscador(){
+      this.valoresBuscar = { item0: null, search: null }
+      let url = 'page='+this.page
+      this.getRoles(url)
+    }
+  }
 }
 </script>

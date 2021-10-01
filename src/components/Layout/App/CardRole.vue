@@ -18,9 +18,9 @@
           <v-card-text>
             <v-checkbox v-for="per in module.permisos" :key="per.id"
               class="checkbox-role"
-              v-model="role.module"
-              :label="per.nombre"
-              :value="per"
+              v-model="role.permisosIds"
+              :label="per.nombrefriendly"
+              :value="per.id"
             ></v-checkbox>
          </v-card-text>
         </div>
