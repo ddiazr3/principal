@@ -24,27 +24,30 @@
       flat
       nav
     >
-      <template v-for="(p, i) in profile">
-        <v-divider
-          v-if="p.divider"
-          :key="`divider-${i}`"
+
+      <bar-item
+          :key="'0'"
+          to="#"
+        >
+          <v-list-item-title v-text="userLoged.nombreCompleto" />
+        </bar-item>
+         <v-divider
+          :key="`divider-1`"
           class="mb-2 mt-2"
         />
-
         <bar-item
-          v-else
-          :key="`item-${i}`"
-          to="/"
+          :key="'1'"
+          to="#"
         >
-          <v-list-item-title v-text="p.title" />
+          <v-list-item-title v-text="'Salir'" @click="salir" />
         </bar-item>
-      </template>
     </v-list>
   </v-menu>
 </template>
 
 <script>
 import BarItem from '../App/BarItem.vue'
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     profile: [
@@ -55,6 +58,18 @@ export default {
   }),
   components: {
     BarItem
+  },
+  computed: {
+    ...mapState('layout', ['userLoged'])
+  },
+  methods: {
+    salir(){
+        localStorage.removeItem("bool")
+        localStorage.removeItem("modulo")
+        localStorage.removeItem("usuario")
+        localStorage.removeItem("permisosGet")
+        window.location.href = '/'
+    }
   }
 }
 </script>

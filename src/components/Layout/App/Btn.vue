@@ -93,7 +93,6 @@ export default {
       default: 0
     },
     disabled: {
-       type: Boolean,
       default: false
     }
   },
