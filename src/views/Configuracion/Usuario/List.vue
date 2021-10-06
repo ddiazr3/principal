@@ -27,7 +27,7 @@
               to="/configuracion/usuarios/create"
               texto="Agregar Nuevo Usuario"
               textoIcon="mdi-plus"
-              :disabled="btnDisabled('create')"
+              :disabled="usuarios[0].permisos[0].indexOf('create') != -1 ? false : true"
             >
             </btn>
           </template>
@@ -93,7 +93,7 @@
                         :to="'/configuracion/usuarios/edit/'+dato.idcrypt"
                         texto="Editar Usuario"
                         textoIcon="mdi-account-edit"
-                        :disabled="disabledTest"
+                        :disabled="usuarios[0].permisos[0].indexOf('edit') != -1 ? false : true"
                         :idrecibir="dato.id"
                       >
                       </btn>
@@ -106,6 +106,7 @@
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
+                        :disabled="usuarios[0].permisos[0].indexOf('desactive') != -1 ? false : true"
                         v-on:accion="eliminar(dato.id)"
                       >
                       </btn>
@@ -118,6 +119,7 @@
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
+                        :disabled="usuarios[0].permisos[0].indexOf('activate') != -1 ? false : true"
                         v-on:accion="activar(dato.id)"
                       >
                       </btn>
@@ -177,20 +179,14 @@ export default {
   mounted () {
     let url = 'page='+this.page
     this.getUsuarios(url)
-    //console.warn(this.tienePermiso("/principal"))
 
      },
   computed: {
     ...mapState('usuario', ['usuarios', 'totalPage', 'page']),
     ...mapState('layout', ['permisovalue']),
-       ...mapGetters('layout',['tienePermisoSet'])
   },
   methods: {
     ...mapActions('usuario', ['getUsuarios','eliminarUsuario','activarUsuario','exportarUsuario','exportarUsuarioPDF']),
-
-    ...mapMutations('layout',['tienePermiso']),
-
-
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
@@ -248,23 +244,8 @@ export default {
         console.log(error)
       })
     },
-    btnDisabled(btn){
-
-
-      var btnI = btn;
-
-        this.permisovalue.to = this.$route.fullPath
-        this.permisovalue.permiso = btn
-        if(this.tienePermisoSet){
-            return false
-        }else{
-            return true
-        }
-
-
-    },
     disabledTest(){
-      return true
+      return false
     }
   }
 }

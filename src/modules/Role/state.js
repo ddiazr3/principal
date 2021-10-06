@@ -6,7 +6,8 @@ export default {
       nombre: null,
       descripcion: null,
       empresaid: null,
-      permisosIds: []
+      permisosIds: [],
+      usuariocreacionid: null
     },
     empresasRole: [],
     modulosRole: [],

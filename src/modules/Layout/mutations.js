@@ -15,10 +15,3 @@ export function setLogin(state, dato) {
     state.userLoged = dato.usuario
     state.items = dato.modulo
 }
-
-export function tienePermiso(state, dato) {
-    var permisos = state.permisosGet
-    let permiso = permisos.filter(element => element.to === dato)
-    console.warn(permiso)
-    return permiso
-}

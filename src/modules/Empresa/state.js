@@ -7,7 +7,8 @@ export default {
         direccion: null,
         nit: null,
         telefono: null,
-        logo: null
+        logo: null,
+        usuariocreacionid: null
     },
     totalPage: 0,
     page: 1

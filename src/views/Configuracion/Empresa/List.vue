@@ -27,6 +27,7 @@
               to="/configuracion/empresas/create"
               texto="Agregar Nueva Empresa"
               textoIcon="mdi-plus"
+              v-if="mostrarBTN"
             >
             </btn>
           </template>
@@ -80,6 +81,7 @@
                         texto="Editar Empresa"
                         textoIcon="mdi-account-edit"
                         :idrecibir="dato.id"
+                        :disabled="empresas[0].permisos[0].indexOf('edit') != -1 ? false : true"
                       >
                       </btn>
                       <btn
@@ -92,6 +94,7 @@
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="eliminar(dato.id)"
+                        :disabled="empresas[0].permisos[0].indexOf('desactive') != -1 ? false : true"
                       >
                       </btn>
                       <btn
@@ -104,6 +107,7 @@
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="activar(dato.id)"
+                        :disabled="empresas[0].permisos[0].indexOf('active') != -1 ? false : true"
                       >
                       </btn>
                     </td>
@@ -132,6 +136,7 @@ export default {
     return {
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
+      mostrarBTN : false,
       valoresBuscar: {
         item0: null,
         search: null
@@ -152,6 +157,13 @@ export default {
   },
   components: { MaterialCard, Btn, Search, Pagiante },
   mounted () {
+
+    var us = JSON.parse(localStorage.getItem("usuario"))
+
+    if(us.idsRoles.indexOf(1) != -1){
+      this.mostrarBTN = true
+    }
+
     let url = 'page='+this.page
     this.getEmpresas(url)
   },

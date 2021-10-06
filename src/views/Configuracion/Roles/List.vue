@@ -27,6 +27,7 @@
               to="/configuracion/roles/create"
               texto="Agregar Nuevo Rol"
               textoIcon="mdi-plus"
+              :disabled="roles[0].permisos[0].indexOf('create') != -1 ? false : true"
             >
             </btn>
           </template>
@@ -58,6 +59,7 @@
                         :to="'/configuracion/roles/edit/'+role.idcrypt"
                         texto="Editar Rol"
                         textoIcon="mdi-account-edit"
+                        :disabled="roles[0].permisos[0].indexOf('edit') != -1 ? false : true"
                       >
                       </btn>
                       <btn
@@ -69,6 +71,7 @@
                         margenes="margin-left:5px"
                         :idrecibir="role.id"
                         v-on:accion="eliminar(role.id)"
+                        :disabled="roles[0].permisos[0].indexOf('desactive') != -1 ? false : true"
                       >
                       </btn>
                     </td>

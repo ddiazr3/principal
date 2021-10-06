@@ -52,8 +52,6 @@ export default {
 
     isLogged: localStorage.getItem("bool"), // para validarlo que si este logueado en algunas rutas
 
-    permisosGet: JSON.parse(localStorage.getItem("permisosGet")),
-
     permisovalue: { //para buscar por la ruta el nombre del botton si se muestra
         to: null,
         permiso: null

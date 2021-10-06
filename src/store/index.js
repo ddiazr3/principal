@@ -4,13 +4,7 @@ import layout from '@/modules/Layout'
 import usuario from '@/modules/usuario'
 import roles from '@/modules/Role'
 import empresa from '@/modules/Empresa'
-import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
-
-
-const dataState = createPersistedState({
-    paths: ['items', 'userLoged', 'isLogged']
-})
 
 export default new Vuex.Store({
     state: {
@@ -27,6 +21,5 @@ export default new Vuex.Store({
         usuario,
         empresa,
         roles
-    },
-    plugins: [dataState]
+    }
 })

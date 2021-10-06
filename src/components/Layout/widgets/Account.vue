@@ -67,7 +67,6 @@ export default {
         localStorage.removeItem("bool")
         localStorage.removeItem("modulo")
         localStorage.removeItem("usuario")
-        localStorage.removeItem("permisosGet")
         window.location.href = '/'
     }
   }

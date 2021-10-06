@@ -13,7 +13,8 @@ export default {
         empresaid: null,
         rolesid: [],
         idcrypt : null,
-        activo: null
+        activo: null,
+        usuariocreacionid: null
     },
     rolesUsuario: [],
     empresasUsuario: [],

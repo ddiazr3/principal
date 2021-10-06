@@ -1,10 +1,16 @@
 import axios from 'axios'
 const urlApi =  process.env.VUE_APP_URL_API;
 
+const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
+
 export async function getRoles ({ commit }, buscar) {
 
   const url = urlApi + '/api/roles?' + buscar
-  axios.get(url)
+  axios.get(url,{
+    params: {
+      id:  usuarioLogueado.idUsuarioCrypt
+    }
+  })
       .then((response) => {
           commit('setRoles', response)
       })
@@ -16,6 +22,7 @@ export async function getRoles ({ commit }, buscar) {
 
 export async function guardarRole({ commit }, role) {
     const url = urlApi + '/api/roles/'
+    role.usuariocreacionid = usuarioLogueado.idUsuarioCrypt
     return axios.post(url, { role })
 }
 
@@ -35,7 +42,11 @@ export async function getCatalogos({ commit }) {
 
     const url = urlApi + '/api/roles/catalogos'
   commit('setLoading', true, { root: true })
-    axios.get(url)
+    axios.get(url,{
+      params: {
+        id:  usuarioLogueado.idUsuarioCrypt
+      }
+    })
         .then((response) => {
             commit('setCatalogos', response)
 
