@@ -28,6 +28,7 @@ export default new Vuex.Store({
             localStorage.removeItem("bool")
             localStorage.removeItem("modulo")
             localStorage.removeItem("usuario")
+            localStorage.removeItem("validarpath")
             window.location.href = '/'
         }
     },

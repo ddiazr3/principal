@@ -1,6 +1,6 @@
 <template>
 <v-row>
-  <v-col cols="2" v-for="module in modules" :key="module.id">
+  <v-col cols="12" md="2" v-for="module in modules" :key="module.id">
     <v-card
       max-width="344"    >
       <v-card-actions>

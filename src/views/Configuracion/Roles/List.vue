@@ -1,5 +1,9 @@
 <template>
 <div>
+  <template v-if="permisosRoles[0] ? (permisosRoles[0].indexOf('index') == -1) : false">
+    <unauthorized></unauthorized>
+  </template>
+  <template v-else>
   <v-container
     id="user-profile-view"
     fluid
@@ -84,6 +88,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </template>
   </div>
 </template>
 <script>
@@ -92,6 +97,7 @@ import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapActions, mapState } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
+import Unauthorized from '../../Unauthorized'
 export default {
   data () {
     return {
@@ -117,7 +123,7 @@ export default {
       ]
     }
   },
-  components: { MaterialCard, Btn, Search, Pagiante },
+  components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
     let url = 'page='+this.page
     this.getRoles(url);

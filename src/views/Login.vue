@@ -59,8 +59,8 @@ export default ({
             localStorage.setItem("bool", true)
             localStorage.setItem("modulo", JSON.stringify(response.data.modulos))
             localStorage.setItem("usuario", JSON.stringify(response.data.usuario))
+            localStorage.setItem("validarpath", JSON.stringify(response.data.validarMP))
             window.location.href = '/';
-           // this.$router.push('/principal')
         })
         .catch((e) => {
            console.log(e)

@@ -1,5 +1,5 @@
 <template>
-  <v-container
+ <v-container
     id="user-profile-view"
     fluid
     tag="section"
@@ -14,7 +14,7 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            <h3 v-if="!$route.params.id ">Crear Empresa </h3>
+            <h3 v-if="!$route.params.id ">Crear Empresa</h3>
             <h3 v-if="$route.params.id">Editar Empresa</h3> —
             <small class="text-body-1">Complete todos los datos</small>
             <btn
@@ -116,7 +116,6 @@
     </v-row>
     <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
-
 </template>
 <script>
 import Btn from '../../../components/Layout/App/Btn.vue'
@@ -162,7 +161,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('empresa', ['empresa'])
+    ...mapState('empresa', ['empresa','permisosEmpresas'])
   },
   methods: {
     ...mapActions('empresa', ['guardarEmpresa','getEmpresa']),

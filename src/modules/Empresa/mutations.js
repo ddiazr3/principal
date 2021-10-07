@@ -1,7 +1,7 @@
 import { find, filter } from 'lodash'
 
 export function setEmpresas(state, response) {
-  state.permisosEmpresas= response.data.permisos
+    state.permisosEmpresas= response.data.permisos
     state.empresas = response.data.empresas.data
     state.totalPage = response.data.last_page
     state.page = response.data.current_page

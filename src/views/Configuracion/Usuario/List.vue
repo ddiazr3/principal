@@ -2,7 +2,7 @@
 <div>
 
 
-<template v-if="permisosUsuarios[0].indexOf('index') == -1">
+<template v-if="permisosUsuarios[0] ? (permisosUsuarios[0].indexOf('index') == -1) : false">
  <unauthorized></unauthorized>
 </template>
 <template v-else>
@@ -23,7 +23,7 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            Usuarios {{  permisosUsuarios[0].indexOf('index') }}
+            Usuarios
             <btn
               color="blue"
               fab

@@ -1,5 +1,9 @@
 <template>
 <div>
+  <template v-if="permisosEmpresas[0] ? (permisosEmpresas[0].indexOf('index') == -1) : true">
+    <unauthorized></unauthorized>
+  </template>
+  <template v-else>
   <v-container
     id="user-profile-view"
     fluid
@@ -120,6 +124,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </template>
   </div>
 </template>
 <script>
@@ -129,6 +134,7 @@ import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
+import Unauthorized from '../../Unauthorized'
 
 export default {
   data () {
@@ -153,7 +159,7 @@ export default {
       ],
     }
   },
-  components: { MaterialCard, Btn, Search, Pagiante },
+  components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
 
     var us = JSON.parse(localStorage.getItem("usuario"))

@@ -64,10 +64,7 @@ export default {
   },
   methods: {
     salir(){
-        localStorage.removeItem("bool")
-        localStorage.removeItem("modulo")
-        localStorage.removeItem("usuario")
-        window.location.href = '/'
+      this.$store.commit("errorCatch", true)
     }
   }
 }

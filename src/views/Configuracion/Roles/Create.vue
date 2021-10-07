@@ -160,7 +160,7 @@ export default {
             this.colorSnackbar = "success"
             this.textoSnackbar = "Datos creados con éxito"
             this.$router.push('/configuracion/roles')
-            this.limpiarUsuario()
+            this.limpiarRole()
           }).catch((error) => {
           if(error.response.status == 401){
             this.$store.commit('errorCatch')
