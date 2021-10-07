@@ -29,6 +29,10 @@ export default {
   components: { MaterialCard },
   data: () => ({
 
-  })
+  }),
+  mounted () {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
+    console.log(usuarioLogueado.token.original.token)
+  }
 }
 </script>

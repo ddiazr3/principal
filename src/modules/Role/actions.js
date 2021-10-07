@@ -15,8 +15,11 @@ export async function getRoles ({ commit }, buscar) {
           commit('setRoles', response)
       })
       .catch((e) => {
-          console.log(e)
-          console.log(' error ')
+        if(e.response.status == 401){
+          commit('errorCatch', { root: true })
+          return
+        }
+        throw e;
       })
 }
 
@@ -33,8 +36,11 @@ export async function getRole({ commit }, id) {
       commit('setRole', response.data)
     })
     .catch((e) => {
-      console.log(e)
-      console.log(' error ')
+      if(e.response.status == 401){
+        commit('errorCatch', { root: true })
+        return
+      }
+      throw e;
     })
 }
 
@@ -52,8 +58,11 @@ export async function getCatalogos({ commit }) {
 
         })
         .catch((e) => {
-            console.log(e)
-            console.log(' error ')
+          if(e.response.status == 401){
+            commit('errorCatch', { root: true })
+            return
+          }
+          throw e;
         }).finally(
           commit('setLoading', false, { root: true })
        )

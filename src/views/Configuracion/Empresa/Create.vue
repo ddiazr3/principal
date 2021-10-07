@@ -180,6 +180,10 @@ export default {
             this.$router.push('/configuracion/empresas')
             this.limpiarEmpresa()
           }).catch((error) => {
+          if(error.response.status == 401){
+            this.$store.commit('errorCatch')
+            return
+          }
           this.snackbar = true
           this.colorSnackbar = "dark"
           this.textoSnackbar = msgError

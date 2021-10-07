@@ -27,7 +27,7 @@
               to="/configuracion/usuarios/create"
               texto="Agregar Nuevo Usuario"
               textoIcon="mdi-plus"
-              :disabled="usuarios[0].permisos[0].indexOf('create') != -1 ? false : true"
+              v-if="permisosUsuarios[0] ? (permisosUsuarios[0].indexOf('create') != -1 ? true : false): false"
             >
             </btn>
           </template>
@@ -93,12 +93,12 @@
                         :to="'/configuracion/usuarios/edit/'+dato.idcrypt"
                         texto="Editar Usuario"
                         textoIcon="mdi-account-edit"
-                        :disabled="usuarios[0].permisos[0].indexOf('edit') != -1 ? false : true"
+                        v-if="permisosUsuarios[0].indexOf('edit') != -1 ? true : false"
                         :idrecibir="dato.id"
                       >
                       </btn>
                       <btn
-                        v-if="dato.activo"
+                        v-if="dato.activo && permisosUsuarios[0].indexOf('desactive') != -1 ? true : false"
                         color="error"
                         fab
                         small
@@ -106,8 +106,6 @@
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
-                        :disabled="usuarios[0].permisos[0].indexOf('desactive') != -1 ? false : true"
-                        v-on:accion="eliminar(dato.id)"
                       >
                       </btn>
                       <btn
@@ -119,7 +117,7 @@
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
-                        :disabled="usuarios[0].permisos[0].indexOf('activate') != -1 ? false : true"
+                        v-if="permisosUsuarios[0].indexOf('activate') != -1 ? true : false"
                         v-on:accion="activar(dato.id)"
                       >
                       </btn>
@@ -182,7 +180,7 @@ export default {
 
      },
   computed: {
-    ...mapState('usuario', ['usuarios', 'totalPage', 'page']),
+    ...mapState('usuario', ['usuarios', 'totalPage', 'page','permisosUsuarios']),
     ...mapState('layout', ['permisovalue']),
   },
   methods: {

@@ -27,7 +27,7 @@
               to="/configuracion/empresas/create"
               texto="Agregar Nueva Empresa"
               textoIcon="mdi-plus"
-              v-if="mostrarBTN"
+              v-if="permisosEmpresas[0] ? (permisosEmpresas[0].indexOf('create') != -1 ? true : false) : false"
             >
             </btn>
           </template>
@@ -81,11 +81,11 @@
                         texto="Editar Empresa"
                         textoIcon="mdi-account-edit"
                         :idrecibir="dato.id"
-                        :disabled="empresas[0].permisos[0].indexOf('edit') != -1 ? false : true"
+                        v-if="permisosEmpresas[0].indexOf('edit') != -1 ? true : false"
                       >
                       </btn>
                       <btn
-                        v-if="dato.activo"
+                        v-if="dato.activo && permisosEmpresas[0].indexOf('update') != -1 ? true : false"
                         color="error"
                         fab
                         small
@@ -94,7 +94,7 @@
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="eliminar(dato.id)"
-                        :disabled="empresas[0].permisos[0].indexOf('desactive') != -1 ? false : true"
+
                       >
                       </btn>
                       <btn
@@ -107,7 +107,7 @@
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="activar(dato.id)"
-                        :disabled="empresas[0].permisos[0].indexOf('active') != -1 ? false : true"
+                        v-if="permisosEmpresas[0].indexOf('update') != -1 ? true : false"
                       >
                       </btn>
                     </td>
@@ -136,7 +136,6 @@ export default {
     return {
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
-      mostrarBTN : false,
       valoresBuscar: {
         item0: null,
         search: null
@@ -168,7 +167,7 @@ export default {
     this.getEmpresas(url)
   },
   computed: {
-    ...mapState('empresa', ['empresas', 'totalPage', 'page'])
+    ...mapState('empresa', ['empresas', 'totalPage', 'page', 'permisosEmpresas'])
   },
   methods: {
     ...mapActions('empresa', ['getEmpresas','eliminarEmpresa','activarEmpresa']),

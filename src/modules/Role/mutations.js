@@ -1,7 +1,8 @@
 import { find, filter } from 'lodash'
 
 export function setRoles(state, response) {
-    state.roles = response.data.data
+    state.permisosRoles= response.data.permisos
+    state.roles = response.data.roles.data
     state.totalPage = response.data.last_page
     state.page = response.data.current_page
 }

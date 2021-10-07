@@ -7,17 +7,20 @@ export async function getUsuarios ({ commit }, buscar) {
 
   const url = process.env.VUE_APP_URL_API + '/api/usuarios?' + buscar
 
-  axios.get(url,{
-    params: {
-      id:  usuarioLogueado.idUsuarioCrypt
-    }
-  })
+      axios.get(url,{
+        params: {
+          id:  usuarioLogueado.idUsuarioCrypt
+        }
+      })
       .then((response) => {
           commit('setUsuarios', response)
       })
       .catch((e) => {
-          console.log(e)
-          console.log(' error ')
+        if(e.response.status == 401){
+          commit('errorCatch', { root: true })
+          return
+        }
+        throw e;
       })
 }
 
@@ -34,8 +37,11 @@ export async function getUsuario({ commit }, id) {
       commit('setUsuario', response.data)
     })
     .catch((e) => {
-      console.log(e)
-      console.log(' error ')
+      if(e.response.status == 401){
+        commit('errorCatch', { root: true })
+        return
+      }
+      throw e;
     })
    commit('setUsuario', id)
 }
@@ -54,8 +60,11 @@ export async function getCatalogos({ commit }) {
 
         })
         .catch((e) => {
-            console.log(e)
-            console.log(' error ')
+          if(e.response.status == 401){
+            commit('errorCatch', { root: true })
+            return
+          }
+          throw e;
         }).finally(
           commit('setLoading', false, { root: true })
        )

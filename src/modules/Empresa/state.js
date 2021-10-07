@@ -1,6 +1,7 @@
 export default {
     namespaced: true,
     empresas: [],
+  permisosEmpresas: [],
     empresa: {
         id: 0,
         nombre: null,

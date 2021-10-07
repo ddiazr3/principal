@@ -14,8 +14,11 @@ export async function getEmpresas({ commit }, buscar) {
             commit('setEmpresas', response)
         })
         .catch((e) => {
-            console.log(e)
-            console.log(' error ')
+          if(e.response.status == 401){
+            commit('errorCatch', { root: true })
+            return
+          }
+          throw e;
         })
 }
 
@@ -32,8 +35,11 @@ export async function getEmpresa({ commit }, id) {
             commit('setEmpresa', response.data)
         })
         .catch((e) => {
-            console.log(e)
-            console.log(' error ')
+          if(e.response.status == 401){
+            commit('errorCatch', { root: true })
+            return
+          }
+          throw e;
         })
 }
 

@@ -162,6 +162,10 @@ export default {
             this.$router.push('/configuracion/roles')
             this.limpiarUsuario()
           }).catch((error) => {
+          if(error.response.status == 401){
+            this.$store.commit('errorCatch')
+            return
+          }
           this.snackbar = true
           this.colorSnackbar = "dark"
           this.textoSnackbar = msgError
