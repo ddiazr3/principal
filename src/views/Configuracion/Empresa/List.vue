@@ -98,7 +98,6 @@
                       >
                       </btn>
                       <btn
-                        v-else
                         color="success"
                         fab
                         small
@@ -107,7 +106,7 @@
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="activar(dato.id)"
-                        v-if="permisosEmpresas[0].indexOf('update') != -1 ? true : false"
+                        v-if="!dato.activo && permisosEmpresas[0].indexOf('update') != -1 ? true : false"
                       >
                       </btn>
                     </td>

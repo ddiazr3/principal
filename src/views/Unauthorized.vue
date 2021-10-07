@@ -7,13 +7,13 @@
     <v-row>
       <v-col cols="12">
         <material-card
-          color="success"
+          color="warning"
           full-header
         >
           <template #heading>
             <div class="pa-6 white--text">
               <div class="text-h4 font-weight-light">
-                Pagina Principal
+                Upss.. No tienes permiso para ver la información
               </div>
             </div>
           </template>

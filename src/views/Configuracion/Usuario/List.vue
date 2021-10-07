@@ -1,10 +1,18 @@
 <template>
 <div>
+
+
+<template v-if="permisosUsuarios[0].indexOf('index') == -1">
+ <unauthorized></unauthorized>
+</template>
+<template v-else>
   <v-container
     id="user-profile-view"
     fluid
     tag="section"
   >
+
+
     <v-row justify="center">
       <v-col
         cols="12"
@@ -15,7 +23,7 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            Usuarios
+            Usuarios {{  permisosUsuarios[0].indexOf('index') }}
             <btn
               color="blue"
               fab
@@ -109,7 +117,6 @@
                       >
                       </btn>
                       <btn
-                        v-else
                         color="success"
                         fab
                         small
@@ -117,7 +124,7 @@
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
-                        v-if="permisosUsuarios[0].indexOf('activate') != -1 ? true : false"
+                        v-if="!dato.activo && permisosUsuarios[0].indexOf('activate') != -1 ? true : false"
                         v-on:accion="activar(dato.id)"
                       >
                       </btn>
@@ -131,7 +138,9 @@
         </material-card>
       </v-col>
     </v-row>
+
   </v-container>
+    </template>
   </div>
 </template>
 <script>
@@ -141,6 +150,7 @@ import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapMutations,mapActions, mapGetters } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
+import Unauthorized from '../../Unauthorized.vue'
 
 export default {
   data () {
@@ -173,7 +183,7 @@ export default {
       ],
     }
   },
-  components: { MaterialCard, Btn, Search, Pagiante },
+  components: { MaterialCard, Btn, Search, Pagiante, Unauthorized },
   mounted () {
     let url = 'page='+this.page
     this.getUsuarios(url)

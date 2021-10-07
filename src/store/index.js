@@ -8,12 +8,14 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 
-const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
-// usuarioLogueado.token.original.token
+const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(localStorage.getItem("usuario")) : null
+const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
+    // usuarioLogueado.token.original.token
 
 axios.defaults.headers.common = {
-  'Authorization': 'bearer ' +usuarioLogueado.token.original.token
+    'Authorization': 'bearer ' + token
 };
+
 export default new Vuex.Store({
     state: {
         loading: false,
@@ -22,11 +24,11 @@ export default new Vuex.Store({
         setLoading(state, bool) {
             state.loading = bool
         },
-        errorCatch(state){
-          localStorage.removeItem("bool")
-          localStorage.removeItem("modulo")
-          localStorage.removeItem("usuario")
-          window.location.href = '/'
+        errorCatch(state, bool) {
+            localStorage.removeItem("bool")
+            localStorage.removeItem("modulo")
+            localStorage.removeItem("usuario")
+            window.location.href = '/'
         }
     },
     actions: {},
