@@ -1,4 +1,7 @@
 // app.js
+
+import CryptoJS from 'crypto-js'
+
 export default {
     namespaced: true,
     inicialOne: 'Sis.',
@@ -46,9 +49,9 @@ export default {
     ],*/
 
 
-    items: JSON.parse(localStorage.getItem("modulo")), //opciones del menu que trae desde el sistema
+    items: localStorage.getItem("modulo") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("modulo"), '111222333444').toString(CryptoJS.enc.Utf8)) : [], //opciones del menu que trae desde el sistema
 
-    userLoged: JSON.parse(localStorage.getItem("usuario")), //datos del usuario mas su token de peticiones y sus roles que tiene asignado
+    userLoged: localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"), '111222333444').toString(CryptoJS.enc.Utf8)) : null, //datos del usuario mas su token de peticiones y sus roles que tiene asignado
 
     isLogged: localStorage.getItem("bool"), // para validarlo que si este logueado en algunas rutas
 

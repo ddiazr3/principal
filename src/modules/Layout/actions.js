@@ -17,5 +17,5 @@ export async function fetch({ commit }) {
 export async function update({ state }) {
     if (!IN_BROWSER) return
 
-    localStorage.setItem('vuetify@user', JSON.stringify(state))
+   // localStorage.setItem('vuetify@user', JSON.stringify(state))
 }

@@ -57,10 +57,10 @@ export default ({
         .then((response) => {
 
             localStorage.setItem("bool", true)
-            localStorage.setItem("modulo", JSON.stringify(response.data.modulos))
-            localStorage.setItem("usuario", JSON.stringify(response.data.usuario))
-            localStorage.setItem("validarpath", JSON.stringify(response.data.validarMP))
-            window.location.href = '/';
+            localStorage.setItem("modulo", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.modulos),this.$keyCryp).toString())
+            localStorage.setItem("usuario", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.usuario),this.$keyCryp).toString())
+            localStorage.setItem("validarpath", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.validarMP),this.$keyCryp).toString())
+           window.location.href = '/';
         })
         .catch((e) => {
            console.log(e)
@@ -69,7 +69,8 @@ export default ({
           this.setLoading(false)
         })
       }
-    }
+    },
+
   },
   data: () => ({
     dialog: true,

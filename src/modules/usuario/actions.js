@@ -1,17 +1,15 @@
 import axios from 'axios'
 import { lintOnSave } from '../../../vue.config'
+import CryptoJS from 'crypto-js'
 
-const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
+
 
 export async function getUsuarios({ commit }, buscar) {
 
+
     const url = process.env.VUE_APP_URL_API + '/api/usuarios?' + buscar
 
-    axios.get(url, {
-            params: {
-                id: usuarioLogueado.idUsuarioCrypt
-            }
-        })
+    axios.get(url)
         .then((response) => {
             commit('setUsuarios', response)
         })
@@ -26,7 +24,9 @@ export async function getUsuarios({ commit }, buscar) {
 }
 
 export async function guardarUsuario({ commit }, usuario) {
-    usuario.usuariocreacionid = usuarioLogueado.idUsuarioCrypt
+  const usuarioLogueado = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"),'111222333444').toString(CryptoJS.enc.Utf8))
+
+  usuario.usuariocreacionid = usuarioLogueado.idUsuarioCrypt
     const url = process.env.VUE_APP_URL_API + '/api/usuarios/'
     return axios.post(url, { usuario })
 }
@@ -51,11 +51,7 @@ export async function getCatalogos({ commit }) {
 
     const url = process.env.VUE_APP_URL_API + '/api/usuarios/catalogos'
     commit('setLoading', true, { root: true })
-    axios.get(url, {
-            params: {
-                id: usuarioLogueado.idUsuarioCrypt
-            }
-        })
+    axios.get(url)
         .then((response) => {
             commit('setCatalogos', response)
 

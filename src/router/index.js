@@ -18,6 +18,7 @@ import CreateRoles from '../views/Configuracion/Roles/Create.vue'
 // rutas de empresas
 import ListEmpresa from '../views/Configuracion/Empresa/List.vue'
 import CreateEmpresa from '../views/Configuracion/Empresa/Create.vue'
+import CryptoJS from 'crypto-js'
 
 Vue.use(VueRouter)
 
@@ -49,7 +50,7 @@ const routes = [
             {
                 path: 'roles/create',
                 component: CreateRoles,
-                name: 'roles-create',
+                name: 'rolescreate',
                 meta: {
                   requiresAuth: true
                 }
@@ -57,7 +58,7 @@ const routes = [
             {
                 path: 'roles/edit/:id',
                 component: CreateRoles,
-                name: 'roles-edit',
+                name: 'rolesedit',
                 meta: {
                   requiresAuth: true
                 }
@@ -72,7 +73,7 @@ const routes = [
             },
             {
                 path: 'empresas/create',
-                name: 'empresas-create',
+                name: 'empresascreate',
                 component: CreateEmpresa,
                 meta: {
                   requiresAuth: true
@@ -81,7 +82,7 @@ const routes = [
             {
                 path: 'empresas/edit/:id',
                 component: CreateEmpresa,
-                name: 'empresas-edit',
+                name: 'empresasedit',
                 meta: {
                   requiresAuth: true
                 }
@@ -97,7 +98,7 @@ const routes = [
             {
                 path: 'usuarios/create',
                 component: CreateUser,
-                name: 'usuarios-create',
+                name: 'usuarioscreate',
                 meta: {
                   requiresAuth: true
                 }
@@ -105,7 +106,7 @@ const routes = [
             {
                 path: 'usuarios/edit/:id',
                 component: CreateUser,
-                name: 'usuarios-edit',
+                name: 'usuariosedit',
                 meta: {
                   requiresAuth: true
                 }
@@ -121,22 +122,25 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-  const modulo_usuario = JSON.parse(localStorage.getItem("validarpath"))
-  const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(localStorage.getItem("usuario")) : null
+  let key = '111222333444'
+  //   items: JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)), //opciones del menu que trae desde el sistema
+  const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"), key).toString(CryptoJS.enc.Utf8)) : null
   const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
 
   //validamos que si viene la ruta del login y tine toke lo redirecciona a la primera ruta de las que tiene permiso el usuario
   if(to.name === 'login' && token != null){
-      next(modulo_usuario[0][0])
+    const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
+    next({ name: modulo_usuario[0][0] })
    }else {
         //validamos que si viene la ruta no es login y no tiene token lo manda a login
         if(to.name != 'login' && token === null){
-         window.location.href = '/'
+          next('/')
         }else{
 
             const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
           //este requiresAuth todas las rutas lo debe de contener para que valide los permisos si no los va a saltar
             if(requiresAuth){
+              const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
 
               // del storage obtengo los permisos del usuario para validar si tiene o no la url que el usuario selecciono
                let tiene_permiso = modulo_usuario.filter(function (per) {
@@ -144,11 +148,8 @@ router.beforeEach((to, from, next) => {
                })
               // si no tiene lo redirecciona a la primera ruta del usuario que tiene permisos
                 if(tiene_permiso.length <= 0) {
-                  next(modulo_usuario[0][0])
+                  next({ name: modulo_usuario[0][0] })
                 }
-            }else{
-              // si no es requerida la ruta lo redirecciona al loguin y vuelve a validar lo del inicio
-              next('/')
             }
         }
   }

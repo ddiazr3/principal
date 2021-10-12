@@ -1,16 +1,13 @@
 import axios from 'axios'
 const urlApi = process.env.VUE_APP_URL_API;
+import CryptoJS from 'crypto-js'
 
-const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
+
 
 export async function getRoles({ commit }, buscar) {
 
     const url = urlApi + '/api/roles?' + buscar
-    axios.get(url, {
-            params: {
-                id: usuarioLogueado.idUsuarioCrypt
-            }
-        })
+    axios.get(url)
         .then((response) => {
             commit('setRoles', response)
         })
@@ -25,7 +22,9 @@ export async function getRoles({ commit }, buscar) {
 }
 
 export async function guardarRole({ commit }, role) {
-    const url = urlApi + '/api/roles/'
+  const usuarioLogueado = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"),'111222333444').toString(CryptoJS.enc.Utf8))
+
+  const url = urlApi + '/api/roles/'
     role.usuariocreacionid = usuarioLogueado.idUsuarioCrypt
     return axios.post(url, { role })
 }
@@ -49,11 +48,7 @@ export async function getCatalogos({ commit }) {
 
     const url = urlApi + '/api/roles/catalogos'
     commit('setLoading', true, { root: true })
-    axios.get(url, {
-            params: {
-                id: usuarioLogueado.idUsuarioCrypt
-            }
-        })
+    axios.get(url)
         .then((response) => {
             commit('setCatalogos', response)
 

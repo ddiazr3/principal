@@ -1,15 +1,12 @@
 import axios from 'axios'
 const urlApi = process.env.VUE_APP_URL_API;
+import CryptoJS from 'crypto-js'
 
-const usuarioLogueado = JSON.parse(localStorage.getItem("usuario"))
+
 export async function getEmpresas({ commit }, buscar) {
 
     const url = process.env.VUE_APP_URL_API + '/api/empresas?' + buscar
-    axios.get(url, {
-            params: {
-                id: usuarioLogueado.idUsuarioCrypt
-            }
-        })
+    axios.get(url)
         .then((response) => {
             commit('setEmpresas', response)
         })
@@ -23,7 +20,9 @@ export async function getEmpresas({ commit }, buscar) {
 }
 
 export async function guardarEmpresa({ commit }, empresa) {
-    const url = process.env.VUE_APP_URL_API + '/api/empresas/'
+  const usuarioLogueado = JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"),'111222333444').toString(CryptoJS.enc.Utf8))
+
+  const url = process.env.VUE_APP_URL_API + '/api/empresas/'
     empresa.usuariocreacionid = usuarioLogueado.idUsuarioCrypt
     return axios.post(url, { empresa })
 }

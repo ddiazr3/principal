@@ -5,10 +5,11 @@ import usuario from '@/modules/usuario'
 import roles from '@/modules/Role'
 import empresa from '@/modules/Empresa'
 import axios from 'axios'
+import CryptoJS from 'crypto-js'
+
 Vue.use(Vuex)
 
-
-const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(localStorage.getItem("usuario")) : null
+const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"),'111222333444').toString(CryptoJS.enc.Utf8)) : null
 const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
     // usuarioLogueado.token.original.token
 

@@ -1,17 +1,9 @@
 version: '3'
 services:
-  vue:
+  my-app-prod:
+    container_name: vuetify
     build:
-      context: ./
-      dockerfile: dockerfiles/vue.docker
-  nginx:
-    build:
-      context: ./
-      dockerfile: dockerfiles/nginx.docker
+      context: .
+      dockerfile: ./dockerfiles/vue.docker
     ports:
       - '5050:80'
-    volumes:
-      - './dockerfiles/nginx.conf:/etc/nginx/nginx.conf'
-      - './dockerfiles/default.conf:/etc/nginx/conf.d/default.conf'
-    links:
-      - vue

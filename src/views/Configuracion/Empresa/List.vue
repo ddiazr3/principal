@@ -162,7 +162,8 @@ export default {
   components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
 
-    var us = JSON.parse(localStorage.getItem("usuario"))
+    //JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)),
+    var us = JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8))
 
     if(us.idsRoles.indexOf(1) != -1){
       this.mostrarBTN = true
