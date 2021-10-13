@@ -5,6 +5,7 @@ import Principal from '../views/Principal.vue'
 
 import Login from '../views/Login.vue'
 import Contrasenia from '../views/Contrasenia.vue'
+import Bienvenida from '../views/Bienvenida.vue'
 import Configuracion from '../views/Configuracion/Configuracion.vue'
 
 // rutas de usuarios
@@ -22,24 +23,28 @@ import CryptoJS from 'crypto-js'
 
 Vue.use(VueRouter)
 
-const routes = [
-    {
+const routes = [{
         path: '/',
         name: 'login',
         component: Login
     },
     {
-      path: '/contrasenia',
-      name: 'contrasenia',
-      component: Contrasenia
+        path: '/contrasenia',
+        name: 'contrasenia',
+        component: Contrasenia
+    },
+    {
+        path: '/bienvenida',
+        name: 'bienvenida',
+        component: Bienvenida
     },
     {
         path: '/principal',
         name: 'principal',
         component: Principal,
-      meta: {
-        requiresAuth: true
-      }
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/configuracion',
@@ -49,7 +54,7 @@ const routes = [
                 component: ListRoles,
                 name: 'roles',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -57,7 +62,7 @@ const routes = [
                 component: CreateRoles,
                 name: 'rolescreate',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -65,7 +70,7 @@ const routes = [
                 component: CreateRoles,
                 name: 'rolesedit',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -73,7 +78,7 @@ const routes = [
                 component: ListEmpresa,
                 name: 'empresas',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -81,7 +86,7 @@ const routes = [
                 name: 'empresascreate',
                 component: CreateEmpresa,
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -89,7 +94,7 @@ const routes = [
                 component: CreateEmpresa,
                 name: 'empresasedit',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -97,7 +102,7 @@ const routes = [
                 component: ListUser,
                 name: 'usuarios',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -105,7 +110,7 @@ const routes = [
                 component: CreateUser,
                 name: 'usuarioscreate',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             },
             {
@@ -113,7 +118,7 @@ const routes = [
                 component: CreateUser,
                 name: 'usuariosedit',
                 meta: {
-                  requiresAuth: true
+                    requiresAuth: true
                 }
             }
         ]
@@ -127,71 +132,80 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
-   switch (to.name) {
-    case 'contrasenia' :
-      if(validaToken()){
-        //valida que el token no sea nulo retorna true si no es nulo
-        const modulo_usuario = getModulos()
-        next({ name: modulo_usuario[0][0] })
-      }else{
-        next()
-      }
-      break
-     case 'login' :
-       if(validaToken()){
-         //valida que el token no sea nulo retorna true si no es nulo
-         const modulo_usuario = getModulos()
-         next({ name: modulo_usuario[0][0] })
-       }else{
-         next()
-       }
-       break
-    default:
+    switch (to.name) {
+        case 'contrasenia':
+            if (validaToken()) {
+                //valida que el token no sea nulo retorna true si no es nulo
+                const modulo_usuario = getModulos()
+                next({ name: modulo_usuario[0][0] })
+            } else {
+                next()
+            }
+            break
+        case 'bienvenida':
+            if (validaToken()) {
+                //valida que el token no sea nulo retorna true si no es nulo
+                const modulo_usuario = getModulos()
+                next({ name: modulo_usuario[0][0] })
+            } else {
+                next()
+            }
+            break
+        case 'login':
+            if (validaToken()) {
+                //valida que el token no sea nulo retorna true si no es nulo
+                const modulo_usuario = getModulos()
+                next({ name: modulo_usuario[0][0] })
+            } else {
+                next()
+            }
+            break
+        default:
 
-      // si viene cualquier ruta y el token esta nullo lo redirecciona a la vista del login
-       if(!validaToken()){
-         next('/')
-       }else{
-         const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-         //este requiresAuth todas las rutas lo debe de contener para que valide los permisos si no los va a saltar
-         if(requiresAuth){
+            // si viene cualquier ruta y el token esta nullo lo redirecciona a la vista del login
+            if (!validaToken()) {
+                next('/')
+            } else {
+                const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+                    //este requiresAuth todas las rutas lo debe de contener para que valide los permisos si no los va a saltar
+                if (requiresAuth) {
 
-           const modulo_usuario = getModulos()
+                    const modulo_usuario = getModulos()
 
-           // del storage obtengo los permisos del usuario para validar si tiene o no la url que el usuario selecciono
-           let tiene_permiso = modulo_usuario.filter(function (per) {
-             return per[0].indexOf(to.name) > -1
-           })
+                    // del storage obtengo los permisos del usuario para validar si tiene o no la url que el usuario selecciono
+                    let tiene_permiso = modulo_usuario.filter(function(per) {
+                        return per[0].indexOf(to.name) > -1
+                    })
 
-           // si no tiene lo redirecciona a la primera ruta del usuario que tiene permisos
-           if(tiene_permiso.length <= 0) {
-             next({ name: modulo_usuario[0][0] })
-           }else{
-             next()
-           }
-         }
-       }
-      break
-  }
+                    // si no tiene lo redirecciona a la primera ruta del usuario que tiene permisos
+                    if (tiene_permiso.length <= 0) {
+                        next({ name: modulo_usuario[0][0] })
+                    } else {
+                        next()
+                    }
+                }
+            }
+            break
+    }
 
 })
 
-function validaToken () {
-  let key = '111222333444'
-  //   items: JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)), //opciones del menu que trae desde el sistema
-  const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"), key).toString(CryptoJS.enc.Utf8)) : null
-  const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
-  if(token != null){
-    return true
-  }else{
-    return false
-  }
+function validaToken() {
+    let key = '111222333444'
+        //   items: JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)), //opciones del menu que trae desde el sistema
+    const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"), key).toString(CryptoJS.enc.Utf8)) : null
+    const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
+    if (token != null) {
+        return true
+    } else {
+        return false
+    }
 }
 
-function getModulos(){
-  let key = '111222333444'
-  const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
-  return modulo_usuario
+function getModulos() {
+    let key = '111222333444'
+    const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
+    return modulo_usuario
 }
 
 export default router

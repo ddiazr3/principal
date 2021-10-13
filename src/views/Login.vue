@@ -22,7 +22,7 @@
                                         <v-spacer></v-spacer>
                                       <v-row>
                                         <v-col cols="12" sm="6">
-                                          <a>Olvido la contraseña</a>
+                                          <a @click="dialogoCorreo">Olvido la contraseña</a>
                                         </v-col>
                                         <v-col class="d-flex flex-row-reverse" cols="12" sm="6" >
                                             <v-btn block :disabled="!valid" small outlined color="info" @click="validate"> Ingresar </v-btn>
@@ -36,14 +36,58 @@
                 </v-tabs>
             </div>
         </v-dialog>
-
     </v-app>
+
+
+    <v-app id="inspire">
+      <v-row justify="center">
+        <v-dialog
+          v-model="dialog2"
+          persistent
+          max-width="390"
+        >
+          <template v-slot:default="dialog">
+              <v-card>
+                <v-toolbar
+                  color="primary"
+                  dark
+                >Ingrese su Email</v-toolbar>
+                <v-card-text>
+                  <div class="text-h2 pa-12">
+                      <v-form ref="loginFormPass" v-model="validCorreo" lazy-validation>
+                        <v-text-field label="Email" v-model="correoContrasenia" :rules="loginEmailRules" required></v-text-field>
+                      </v-form>
+                  </div>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                  <v-btn
+                    text
+                    @click="enviarCorreo" :disabled="!validCorreo"
+                  >Enviar</v-btn>
+                  <v-btn
+                    text
+                    @click="cerrarDialogo"
+                  >Close</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+        </v-dialog>
+      </v-row>
+    </v-app>
+
+    <dialogo :dialog="dialogoPopup" :color="colorPopup" :title="titlePopup" :msg="msgPopup" @cerrarPopup="dialogoPopup = false"></dialogo>
+
 </div>
 </template>
 <script>
 import { mapMutations } from 'vuex'
 import axios from 'axios'
+import Dialogo from '../components/Layout/App/Dialogo.vue'
 export default ({
+
+  components: {
+      Dialogo
+  },
 
   methods: {
      ...mapMutations(['setLoading']),
@@ -72,15 +116,55 @@ export default ({
         })
       }
     },
+    enviarCorreo(){
+       if (this.$refs.loginFormPass.validate()) {
+           const url = process.env.VUE_APP_URL_API + '/api/usuarios/passwordchange'
+           this.setLoading(true)
+         axios.post(url,{
+           correo: this.correoContrasenia
+         })
+        .then((response) => {
+          this.dialogoPopup= true
+          this.colorPopup= "primary"
+          this.titlePopup= "Aviso.."
+          this.dialog2 = false
+          this.correoContrasenia = null
+          this.msgPopup= response.data.message
+        })
+        .catch((e) => {
+            this.dialogoPopup= true
+            this.colorPopup= "error"
+            this.titlePopup= "Aviso.."
+            this.msgPopup= e.response.data.message
+        }).finally((e) => {
+          this.setLoading(false)
+        })
+       }
+    },
+    dialogoCorreo(){
+      this.dialog2 = true
+    },
+    cerrarDialogo(){
+      this.dialog2 = false
+    }
 
   },
   data: () => ({
+
+    dialogoPopup: false,
+    colorPopup: "primary",
+    titlePopup: "",
+    msgPopup: "",
+
     dialog: true,
+    correoContrasenia: null,
+    dialog2: false,
     tab: 0,
     tabs: [
         {name:"Login", icon:"mdi-account"}
     ],
     valid: true,
+    validCorreo: true,
     verify: "",
     loginPassword: "",
     loginEmail: "",
