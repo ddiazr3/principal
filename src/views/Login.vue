@@ -1,7 +1,7 @@
 <template>
 <div id="app">
   <v-app>
-        <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
+        <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px" :retain-focus="false">
             <div>
                 <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
                     <v-tab>
@@ -19,12 +19,15 @@
                                         <v-col cols="12">
                                             <v-text-field v-model="loginPassword" :append-icon="show1?'mdi-eye':'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Contraseña" hint="At least 8 characters" counter @click:append="show1 = !show1"></v-text-field>
                                         </v-col>
-                                        <v-col class="d-flex" cols="12" sm="6" xsm="12">
-                                        </v-col>
                                         <v-spacer></v-spacer>
-                                        <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                                            <v-btn x-large block :disabled="!valid" color="success" @click="validate"> Login </v-btn>
+                                      <v-row>
+                                        <v-col cols="12" sm="6">
+                                          <a>Olvido la contraseña</a>
                                         </v-col>
+                                        <v-col class="d-flex flex-row-reverse" cols="12" sm="6" >
+                                            <v-btn block :disabled="!valid" small outlined color="info" @click="validate"> Ingresar </v-btn>
+                                        </v-col>
+                                      </v-row>
                                     </v-row>
                                 </v-form>
                             </v-card-text>
@@ -44,7 +47,6 @@ export default ({
 
   methods: {
      ...mapMutations(['setLoading']),
-     ...mapMutations('layout',['setLogin']),
     validate() {
       if (this.$refs.loginForm.validate()) {
         // submit form to server/API here...

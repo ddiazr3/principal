@@ -20,9 +20,11 @@
 
         <template v-else>
           <!--Por si en su momento quiero agregar una ruta que no pase por el menu puedo validarlo con el nombre que viene de la ruta $route.path y asi poder mostrar el componente de la vista que quiera-->
-           <login></login>
-        </template>
+           <login v-if="$route.name === 'login'"></login>
+           <contrasenia v-if="$route.name === 'contrasenia'"></contrasenia>
 
+        </template>
+    <router-view />
 
   </div>
 </template>
@@ -35,6 +37,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import { mapState } from 'vuex'
 import Login from './views/Login.vue'
+import Contrasenia from './views/Contrasenia.vue'
 
 export default {
   components: {
@@ -42,7 +45,8 @@ export default {
     Nav,
     Contentenido,
     Loading,
-    Login
+    Login,
+    Contrasenia
   },
   computed:{
     ...mapState(['loading']),

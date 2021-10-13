@@ -4,7 +4,7 @@ import Principal from '../views/Principal.vue'
 
 
 import Login from '../views/Login.vue'
-
+import Contrasenia from '../views/Contrasenia.vue'
 import Configuracion from '../views/Configuracion/Configuracion.vue'
 
 // rutas de usuarios
@@ -29,12 +29,17 @@ const routes = [
         component: Login
     },
     {
+      path: '/contrasenia',
+      name: 'contrasenia',
+      component: Contrasenia
+    },
+    {
         path: '/principal',
         name: 'principal',
         component: Principal,
-        meta: {
-            requiresAuth: true
-        }
+      meta: {
+        requiresAuth: true
+      }
     },
     {
         path: '/configuracion',
@@ -122,38 +127,71 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 
+   switch (to.name) {
+    case 'contrasenia' :
+      if(validaToken()){
+        //valida que el token no sea nulo retorna true si no es nulo
+        const modulo_usuario = getModulos()
+        next({ name: modulo_usuario[0][0] })
+      }else{
+        next()
+      }
+      break
+     case 'login' :
+       if(validaToken()){
+         //valida que el token no sea nulo retorna true si no es nulo
+         const modulo_usuario = getModulos()
+         next({ name: modulo_usuario[0][0] })
+       }else{
+         next()
+       }
+       break
+    default:
+
+      // si viene cualquier ruta y el token esta nullo lo redirecciona a la vista del login
+       if(!validaToken()){
+         next('/')
+       }else{
+         const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+         //este requiresAuth todas las rutas lo debe de contener para que valide los permisos si no los va a saltar
+         if(requiresAuth){
+
+           const modulo_usuario = getModulos()
+
+           // del storage obtengo los permisos del usuario para validar si tiene o no la url que el usuario selecciono
+           let tiene_permiso = modulo_usuario.filter(function (per) {
+             return per[0].indexOf(to.name) > -1
+           })
+
+           // si no tiene lo redirecciona a la primera ruta del usuario que tiene permisos
+           if(tiene_permiso.length <= 0) {
+             next({ name: modulo_usuario[0][0] })
+           }else{
+             next()
+           }
+         }
+       }
+      break
+  }
+
+})
+
+function validaToken () {
   let key = '111222333444'
   //   items: JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)), //opciones del menu que trae desde el sistema
   const usuarioLogueado = localStorage.getItem("usuario") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("usuario"), key).toString(CryptoJS.enc.Utf8)) : null
   const token = usuarioLogueado ? usuarioLogueado.token.original.token : null
-
-  //validamos que si viene la ruta del login y tine toke lo redirecciona a la primera ruta de las que tiene permiso el usuario
-  if(to.name === 'login' && token != null){
-    const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
-    next({ name: modulo_usuario[0][0] })
-   }else {
-        //validamos que si viene la ruta no es login y no tiene token lo manda a login
-        if(to.name != 'login' && token === null){
-          next('/')
-        }else{
-
-            const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-          //este requiresAuth todas las rutas lo debe de contener para que valide los permisos si no los va a saltar
-            if(requiresAuth){
-              const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
-
-              // del storage obtengo los permisos del usuario para validar si tiene o no la url que el usuario selecciono
-               let tiene_permiso = modulo_usuario.filter(function (per) {
-                 return per[0].indexOf(to.name) > -1
-               })
-              // si no tiene lo redirecciona a la primera ruta del usuario que tiene permisos
-                if(tiene_permiso.length <= 0) {
-                  next({ name: modulo_usuario[0][0] })
-                }
-            }
-        }
+  if(token != null){
+    return true
+  }else{
+    return false
   }
-  next()
-})
+}
+
+function getModulos(){
+  let key = '111222333444'
+  const modulo_usuario = localStorage.getItem("validarpath") != undefined ? JSON.parse(CryptoJS.AES.decrypt(localStorage.getItem("validarpath"), key).toString(CryptoJS.enc.Utf8)) : null
+  return modulo_usuario
+}
 
 export default router
