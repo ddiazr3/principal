@@ -13,7 +13,7 @@
           <template #heading>
             <div class="pa-6 white--text">
               <div class="text-h4 font-weight-light">
-                Pagina Principal
+                Pagina Principal 1
               </div>
             </div>
           </template>
