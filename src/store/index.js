@@ -26,11 +26,21 @@ export default new Vuex.Store({
             state.loading = bool
         },
         errorCatch(state, bool) {
-            localStorage.removeItem("bool")
-            localStorage.removeItem("modulo")
-            localStorage.removeItem("usuario")
-            localStorage.removeItem("validarpath")
-            window.location.href = '/'
+          const url = process.env.VUE_APP_URL_API + '/api/usuarios/logout'
+          axios.post(url)
+            .then((response) => {
+              localStorage.removeItem("bool")
+              localStorage.removeItem("modulo")
+              localStorage.removeItem("usuario")
+              localStorage.removeItem("validarpath")
+              window.location.href = '/'
+            })
+            .catch((e) => {
+            }).finally((e) => {
+
+            })
+
+
         }
     },
     actions: {},

@@ -34,7 +34,7 @@ const routes = [{
         component: Contrasenia
     },
     {
-        path: '/bienvenida',
+        path: '/bienvenida/:token',
         name: 'bienvenida',
         component: Bienvenida
     },
@@ -144,11 +144,9 @@ router.beforeEach((to, from, next) => {
             break
         case 'bienvenida':
             if (validaToken()) {
-                //valida que el token no sea nulo retorna true si no es nulo
-                const modulo_usuario = getModulos()
-                next({ name: modulo_usuario[0][0] })
+              next()
             } else {
-                next()
+                next('/')
             }
             break
         case 'login':

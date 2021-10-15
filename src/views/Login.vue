@@ -96,6 +96,9 @@ export default ({
         // submit form to server/API here...
         const url = process.env.VUE_APP_URL_API + '/api/usuarios/login'
         this.setLoading(true)
+
+        console.log("pass "+url)
+
          axios.post(url,{
            password : this.loginPassword,
            correo: this.loginEmail
@@ -106,11 +109,23 @@ export default ({
             localStorage.setItem("modulo", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.modulos),this.$keyCryp).toString())
             localStorage.setItem("usuario", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.usuario),this.$keyCryp).toString())
             localStorage.setItem("validarpath", this.$CryptoJS.AES.encrypt(JSON.stringify(response.data.validarMP),this.$keyCryp).toString())
-           window.location.href = '/';
+
+          if(response.data.isPrimeraVes){
+            //window.location.href = '/bienvenida/'+response.data.tokenR;
+            let ur = response.data.tokenR;
+            this.$router.push( { path: '/bienvenida/'+ur })
+           // this.$router.go({ path:  ur})
+          }else{
+            window.location.href = '/';
+          }
+
         })
         .catch((e) => {
            console.log(e)
-            alert("datos incorrectos")
+          this.dialogoPopup= true
+          this.colorPopup= "error"
+          this.titlePopup= "Aviso.."
+          this.msgPopup= e.response.data.message
         }).finally((e) => {
           this.setLoading(false)
         })

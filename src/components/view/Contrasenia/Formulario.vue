@@ -70,16 +70,18 @@ export default {
             this.password.pass = null
             this.password.confirmPassword = null
             this.msgPopup= response.data.message
-            setTimeout(function () {
-              window.location.href = '/'
-            },5000)
+
+            if(!response.data.isFirst){
+              setTimeout(function () {
+                window.location.href = '/'
+              },5000)
+            }
           })
           .catch((e) => {
             this.dialogoPopup= true
             this.colorPopup= "error"
             this.titlePopup= "Aviso.."
             this.msgPopup= e.response.data.message
-            alert("datos incorrectos")
           }).finally((e) => {
           this.setLoading(false)
         })
