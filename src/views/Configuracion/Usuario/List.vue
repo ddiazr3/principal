@@ -114,6 +114,7 @@
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
+                        v-on:accion="eliminar(dato.id)"
                       >
                       </btn>
                       <btn

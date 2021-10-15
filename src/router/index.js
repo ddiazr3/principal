@@ -29,7 +29,7 @@ const routes = [{
         component: Login
     },
     {
-        path: '/contrasenia',
+        path: '/contrasenia/:token',
         name: 'contrasenia',
         component: Contrasenia
     },

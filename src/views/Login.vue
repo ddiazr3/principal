@@ -118,7 +118,7 @@ export default ({
     },
     enviarCorreo(){
        if (this.$refs.loginFormPass.validate()) {
-           const url = process.env.VUE_APP_URL_API + '/api/usuarios/passwordchange'
+           const url = process.env.VUE_APP_URL_API + '/api/usuarios/confirmacioncorreo'
            this.setLoading(true)
          axios.post(url,{
            correo: this.correoContrasenia
@@ -130,6 +130,7 @@ export default ({
           this.dialog2 = false
           this.correoContrasenia = null
           this.msgPopup= response.data.message
+
         })
         .catch((e) => {
             this.dialogoPopup= true

@@ -1,5 +1,4 @@
 <template>
- <v-app id="inspire">
       <v-row justify="center">
         <v-dialog
           v-model="dialog"
@@ -12,7 +11,7 @@
                   :color="color"
                   dark
                 >{{ title }}</v-toolbar>
-                <v-card-text>
+                <v-card-text style="margin-top: 15px">
                   <div class="text-h5">
                     {{ msg }}
                   </div>
@@ -27,7 +26,6 @@
             </template>
         </v-dialog>
       </v-row>
-    </v-app>
 </template>
 <script>
 
