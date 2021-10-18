@@ -42,7 +42,7 @@
     "eslint-plugin-vuetify": "^1.0.0-beta.8",
     "lodash": "^4.17.15",
     "open": "^7.0.3",
-    "sass": "^1.26.5",
+    "sass": "~1.32.12",
     "sass-loader": "^8.0.2",
     "shelljs": "^0.8.4",
     "vue-chartist": "^2.3.1",
