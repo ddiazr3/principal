@@ -1,7 +1,6 @@
 version: '3'
 services:
   my-app-prod:
-    container_name: vuetify
     build:
       context: .
       dockerfile: ./dockerfiles/vue.docker
