@@ -1,9 +1,0 @@
-version: '3'
-services:
-  my-app-prod:
-    build:
-      context: .
-      dockerfile: ./dockerfiles/vue.docker
-    ports:
-      - '5050:8080'
-    restart: always
