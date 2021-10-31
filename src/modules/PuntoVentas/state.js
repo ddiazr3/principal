@@ -1,21 +1,17 @@
 export default {
     namespaced: true,
-    empresas: [],
-    permisosEmpresas: [],
-    empresa: {
+    puntoventas: [],
+    permisospuntoventas: [],
+    puntoventa: {
         id: 0,
         nombre: null,
         direccion: null,
         nit: null,
         telefono: null,
         logo: null,
-        usuariocreacionid: null,
+        empresaid: null,
         activo: null,
-        tienesucursal: null,
-        cantidadsucursal: null,
-        punto_ventas: []
     },
-    puntoventadatosempresa: false,
     totalPage: 0,
     page: 1
 }

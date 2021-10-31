@@ -14,8 +14,8 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            <h3 v-if="!$route.params.id ">Crear Empresa</h3>
-            <h3 v-if="$route.params.id">Editar Empresa</h3> —
+            <h3 v-if="!$route.params.id ">Crear Punto de Ventas</h3>
+            <h3 v-if="$route.params.id">Editar Punto de Ventas</h3> —
             <small class="text-body-1">Complete todos los datos</small>
             <btn
               color="blue"
@@ -25,7 +25,7 @@
               right
               link
               exact
-              to="/configuracion/empresas"
+              to="/configuracion/puntoventas"
               texto="Regresar"
               textoIcon="mdi-arrow-left-thick"
             >
@@ -44,9 +44,9 @@
                 >
                   <v-text-field
                     color="purple"
-                    label="Nombre Empresa"
+                    label="Nombre"
                     :rules="textRules"
-                     v-model="empresa.nombre"
+                     v-model="puntoventa.nombre"
                       :max="25"
                      :counter="25"
                   />
@@ -62,7 +62,7 @@
                     :rules="textCincuentaRules"
                     :counter="50"
                     max-length="25"
-                     v-model="empresa.direccion"
+                     v-model="puntoventa.direccion"
                   />
                 </v-col>
 
@@ -73,7 +73,7 @@
                   <v-text-field
                     color="purple"
                     label="NIT"
-                    v-model="empresa.nit"
+                    v-model="puntoventa.nit"
                     :rules="textNumberRules"
                     :counter="10"
                   />
@@ -86,26 +86,11 @@
                   <v-text-field
                     color="purple"
                     label="Telefono"
-                    v-model="empresa.telefono"
+                    v-model="puntoventa.telefono"
                     :rules="textNumberTelRules"
                     :counter="8"
                   />
                 </v-col>
-
-                <v-col
-                  cols="12"
-                  md="12"
-                >
-                 <h1>Configuración del punto de ventas</h1>
-                </v-col>
-                <v-col cols="12" md="12" v-for="(item, i) in empresa.punto_ventas" :key="i" >
-                  <p class="text-center" text-color="red">
-                    Punto de Venta {{ i + 1}}
-                  </p>
-                    <punto-venta :puntoventa="item" :index="i" :empresa="empresa"></punto-venta>
-                     <v-spacer class="hidden-sm-and-down" />
-                </v-col>
-
 
 
                 <v-col
@@ -116,7 +101,7 @@
                         color="primary"
                         fab
                         small
-                        :texto="!$route.params.id ? 'Guardar Empresa' : 'Actualizar Empresa'"
+                        :texto="!$route.params.id ? 'Guardar Punto de Venta' : 'Actualizar Punto de Venta'"
                         textoIcon="mdi-content-save"
                         margenes="margin-left:5px"
                         v-on:accion="guardar"
@@ -139,7 +124,6 @@ import Btn from '../../../components/Layout/App/Btn.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import Snackbar from '../../../components/Layout/App/Snackbar'
-import PuntoVenta from '../../../components/view/Empresa/PuntoVenta.vue'
 //import PuntoVenta from '../../../components/view/Empresa/PuntoVenta'
 const msgError = process.env.VUE_APP_MSG_ERROR
 
@@ -171,32 +155,31 @@ export default {
     ],
 
   }),
-  components: { PuntoVenta, Snackbar, MaterialCard, Btn, PuntoVenta },
+  components: { Snackbar, MaterialCard, Btn },
   mounted() {
     if(this.$route.params.id){
-      this.getEmpresa(this.$route.params.id)
+      this.getPuntoVenta(this.$route.params.id)
     }else{
-      this.limpiarEmpresa()
+      this.limpiarPuntoVenta()
     }
   },
   computed: {
-    ...mapState('empresa', ['empresa','permisosEmpresas'])
+    ...mapState('puntoventasinstance', ['puntoventa'])
   },
   methods: {
-    ...mapActions('empresa', ['guardarEmpresa','getEmpresa']),
-    ...mapMutations('empresa', ['limpiarEmpresa','datosIguales']),
-
+    ...mapActions('puntoventasinstance', ['guardarPuntoVenta','getPuntoVenta']),
+    ...mapMutations('puntoventasinstance', ['limpiarPuntoVenta','datosIguales']),
     guardar() {
       this.$refs.form.validate()
 
       if(this.valid){
-        this.guardarEmpresa(this.empresa)
+        this.guardarPuntoVenta(this.puntoventa)
           .then((res) => {
             this.snackbar = true
             this.colorSnackbar = "success"
             this.textoSnackbar = "Datos creados con éxito"
-            this.$router.push('/configuracion/empresas')
-            this.limpiarEmpresa()
+            this.$router.push('/configuracion/puntoventas')
+            this.limpiarPuntoVenta()
           }).catch((error) => {
           if(error.response.status == 401){
             this.$store.commit('errorCatch')

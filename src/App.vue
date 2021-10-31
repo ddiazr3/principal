@@ -22,9 +22,9 @@
           <!--Por si en su momento quiero agregar una ruta que no pase por el menu puedo validarlo con el nombre que viene de la ruta $route.path y asi poder mostrar el componente de la vista que quiera-->
            <login v-if="$route.name === 'login'"></login>
            <contrasenia v-if="$route.name === 'contrasenia'"></contrasenia>
-
+          <router-view />
         </template>
-    <router-view />
+
 
   </div>
 </template>

@@ -1,7 +1,7 @@
 import { find, filter } from 'lodash'
 
 export function setEmpresas(state, response) {
-    state.permisosEmpresas= response.data.permisos
+    state.permisosEmpresas = response.data.permisos
     state.empresas = response.data.empresas.data
     state.totalPage = response.data.last_page
     state.page = response.data.current_page
@@ -15,7 +15,17 @@ export function setEmpresa(state, empresa) {
     state.empresa.log = empresa.log
     state.empresa.idcrypt = empresa.idcrypt
     state.empresa.id = empresa.id
+    state.empresa.activo = empresa.activo
+    state.empresa.tienesucursal = empresa.tienesucursal
+    state.empresa.cantidadsucursal = empresa.cantidadsucursal
+    state.empresa.punto_ventas = empresa.puntoventas
+
 }
+
+export function datosIguales(state, value) {
+    state.puntoventadatosempresa = value
+}
+
 
 
 export function limpiarEmpresa(state) {

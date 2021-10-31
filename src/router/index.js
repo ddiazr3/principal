@@ -19,6 +19,12 @@ import CreateRoles from '../views/Configuracion/Roles/Create.vue'
 // rutas de empresas
 import ListEmpresa from '../views/Configuracion/Empresa/List.vue'
 import CreateEmpresa from '../views/Configuracion/Empresa/Create.vue'
+
+// rutas de punto de ventas
+import ListPuntoVentas from '../views/Configuracion/PuntoVentas/List.vue'
+import CreatePuntoVentas from '../views/Configuracion/PuntoVentas/Create.vue'
+
+
 import CryptoJS from 'crypto-js'
 
 Vue.use(VueRouter)
@@ -98,6 +104,30 @@ const routes = [{
                 }
             },
             {
+                path: 'puntoventas',
+                component: ListPuntoVentas,
+                name: 'puntoventas',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'puntoventas/create',
+                name: 'puntoventascreate',
+                component: CreatePuntoVentas,
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'puntoventas/edit/:id',
+                component: CreatePuntoVentas,
+                name: 'puntoventasedit',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
                 path: 'usuarios',
                 component: ListUser,
                 name: 'usuarios',
@@ -144,7 +174,7 @@ router.beforeEach((to, from, next) => {
             break
         case 'bienvenida':
             if (validaToken()) {
-              next()
+                next()
             } else {
                 next('/')
             }

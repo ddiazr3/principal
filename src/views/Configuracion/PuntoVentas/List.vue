@@ -1,6 +1,6 @@
 <template>
 <div>
-  <template v-if="permisosEmpresas[0] ? (permisosEmpresas[0].indexOf('index') == -1) : true">
+  <template v-if="permisospuntoventas[0] ? (permisospuntoventas[0].indexOf('index') == -1) : true">
     <unauthorized></unauthorized>
   </template>
   <template v-else>
@@ -19,7 +19,7 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            Empresas
+            Punto de Ventas
             <!--btn
               color="blue"
               fab
@@ -31,7 +31,7 @@
               to="/configuracion/empresas/create"
               texto="Agregar Nueva Empresa"
               textoIcon="mdi-plus"
-              v-if="permisosEmpresas[0] ? (permisosEmpresas[0].indexOf('create') != -1 ? true : false) : false"
+              v-if="permisospuntoventas[0] ? (permisospuntoventas[0].indexOf('create') != -1 ? true : false) : false"
             >
             </btn-->
           </template>
@@ -45,11 +45,12 @@
                     <th class="text-left">Nit</th>
                     <th class="text-left">Telefono</th>
                     <th class="text-left">Activo</th>
+                    <th class="text-left">Igual al principal</th>
                     <th class="text-left">Opciones</th>
                   </tr>
               </thead>
               <tbody>
-                 <tr v-for="dato in empresas" :key="dato.id">
+                 <tr v-for="dato in puntoventas" :key="dato.id">
                     <td class="text-left">{{ dato.nombre }}</td>
                     <td class="text-left">{{ dato.direccion }}</td>
                     <td class="text-left">{{ dato.nit }}</td>
@@ -74,6 +75,26 @@
                           Inactivo
                         </v-chip>
                     </td>
+                    <td class="text-left">
+                       <v-chip
+                         v-if="dato.igualprincipal"
+                          class="ma-2"
+                          x-small
+                          color="green"
+                          text-color="white"
+                        >
+                         Si
+                        </v-chip>
+                        <v-chip
+                         v-else
+                          class="ma-2"
+                          x-small
+                          color="error"
+                          text-color="white"
+                        >
+                          No
+                        </v-chip>
+                    </td>
                     <td>
                       <btn
                         color="warning"
@@ -81,19 +102,19 @@
                         small
                         link
                         exact
-                        :to="'/configuracion/empresas/edit/'+dato.idcrypt"
-                        texto="Editar Empresa"
+                        :to="'/configuracion/puntoventas/edit/'+dato.idcrypt"
+                        texto="Editar Punto de Ventas"
                         textoIcon="mdi-account-edit"
                         :idrecibir="dato.id"
-                        v-if="permisosEmpresas[0].indexOf('edit') != -1 ? true : false"
+                        v-if="permisospuntoventas[0].indexOf('edit') != -1 ? true : false"
                       >
                       </btn>
                       <btn
-                        v-if="dato.activo && permisosEmpresas[0].indexOf('update') != -1 ? true : false"
+                        v-if="dato.activo && permisospuntoventas[0].indexOf('update') != -1 ? true : false"
                         color="error"
                         fab
                         small
-                        texto="Eliminar Empresa"
+                        texto="Desactivar Punto de Ventas"
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
@@ -105,12 +126,12 @@
                         color="success"
                         fab
                         small
-                        texto="Activar Empresa"
+                        texto="Activar Punto Ventas"
                         textoIcon="mdi-check"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
                         v-on:accion="activar(dato.id)"
-                        v-if="!dato.activo && permisosEmpresas[0].indexOf('update') != -1 ? true : false"
+                        v-if="!dato.activo && permisospuntoventas[0].indexOf('update') != -1 ? true : false"
                       >
                       </btn>
                     </td>
@@ -133,7 +154,6 @@ import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
-import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
 import Unauthorized from '../../Unauthorized'
 
 export default {
@@ -170,44 +190,44 @@ export default {
     }
 
     let url = 'page='+this.page
-    this.getEmpresas(url)
+    this.getPuntoVentas(url)
   },
   computed: {
-    ...mapState('empresa', ['empresas', 'totalPage', 'page', 'permisosEmpresas'])
+    ...mapState('puntoventasinstance', ['puntoventas', 'totalPage', 'page', 'permisospuntoventas'])
   },
   methods: {
-    ...mapActions('empresa', ['getEmpresas','eliminarEmpresa','activarEmpresa']),
+    ...mapActions('puntoventasinstance', ['getPuntoVentas','eliminarPuntoVentas','activarPuntoVentas']),
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
       }else{
          var url = 'page='+val
       }
-      this.getEmpresas(url)
+      this.getPuntoVentas(url)
     },
     buscar(data) {
       let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
-       this.getEmpresas(url)
+       this.getPuntoVentas(url)
     },
     eliminar(id){
-      this.eliminarEmpresa(id).
+      this.eliminarPuntoVentas(id).
       then((res) => {
         let url = 'page='+this.page
-        this.getEmpresas(url)
+        this.getPuntoVentas(url)
       })
 
     },
     activar(id){
-      this.activarEmpresa(id).
+      this.activarPuntoVentas(id).
       then((res) => {
         let url = 'page='+this.page
-        this.getEmpresas(url)
+        this.getPuntoVentas(url)
       })
     },
     limipiarBuscador(){
       this.valoresBuscar = { item0: null, search: null }
       let url = 'page='+this.page
-      this.getEmpresas(url)
+      this.getPuntoVentas(url)
     }
   }
 }

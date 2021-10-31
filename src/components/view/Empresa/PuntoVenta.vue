@@ -1,68 +1,43 @@
 <template>
- <v-container
-    id="user-profile-view"
-    fluid
-    tag="section"
-  >
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <material-card
-          color="primary"
-          icon="mdi-account-outline"
-        >
-          <template #title>
-            <h3 v-if="!$route.params.id ">Crear Empresa</h3>
-            <h3 v-if="$route.params.id">Editar Empresa</h3> —
-            <small class="text-body-1">Complete todos los datos</small>
-            <btn
-              color="blue"
-              fab
-              small
-              absolute
-              right
-              link
-              exact
-              to="/configuracion/empresas"
-              texto="Regresar"
-              textoIcon="mdi-arrow-left-thick"
-            >
-            </btn>
-          </template>
-          <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation
-            >
-            <v-container class="py-0">
-              <v-row>
+               <v-row>
                 <v-col
                   cols="12"
                   md="4"
                 >
-                  <v-text-field
+                  <v-text-field v-if="puntoventa.igualprincipal"
                     color="purple"
-                    label="Nombre Empresa"
-                    :rules="textRules"
-                     v-model="empresa.nombre"
-                      :max="25"
-                     :counter="25"
+                    :value="empresa.nombre"
+                    :disabled="true"
                   />
+
+                <v-text-field v-else
+                    color="purple"
+                    label="Nombre"
+                    :rules="textRules"
+                    v-model="puntoventa.nombre"
+                    :max="25"
+                    :counter="25"
+                  />
+
                 </v-col>
 
                 <v-col
                   cols="12"
                   md="4"
                 >
-                  <v-text-field
+                <v-text-field v-if="puntoventa.igualprincipal"
+                    color="purple"
+                    :value="empresa.direccion"
+                    :disabled="true"
+                  />
+
+                  <v-text-field v-else
                     color="purple"
                     label="Direccion"
                     :rules="textCincuentaRules"
                     :counter="50"
                     max-length="25"
-                     v-model="empresa.direccion"
+                     v-model="puntoventa.direccion"
                   />
                 </v-col>
 
@@ -70,10 +45,15 @@
                   cols="12"
                   md="4"
                 >
-                  <v-text-field
+                <v-text-field v-if="puntoventa.igualprincipal"
+                    color="purple"
+                    :value="empresa.nit"
+                    :disabled="true"
+                  />
+                  <v-text-field v-else
                     color="purple"
                     label="NIT"
-                    v-model="empresa.nit"
+                    v-model="puntoventa.nit"
                     :rules="textNumberRules"
                     :counter="10"
                   />
@@ -83,67 +63,32 @@
                   cols="12"
                   md="4"
                 >
-                  <v-text-field
+                <v-text-field v-if="puntoventa.igualprincipal"
+                    color="purple"
+                    :value="empresa.telefono"
+                    :disabled="true"
+                  />
+                  <v-text-field v-else
                     color="purple"
                     label="Telefono"
-                    v-model="empresa.telefono"
+                    v-model="puntoventa.telefono"
                     :rules="textNumberTelRules"
                     :counter="8"
                   />
                 </v-col>
 
-                <v-col
-                  cols="12"
-                  md="12"
-                >
-                 <h1>Configuración del punto de ventas</h1>
-                </v-col>
-                <v-col cols="12" md="12" v-for="(item, i) in empresa.punto_ventas" :key="i" >
-                  <p class="text-center" text-color="red">
-                    Punto de Venta {{ i + 1}}
-                  </p>
-                    <punto-venta :puntoventa="item" :index="i" :empresa="empresa"></punto-venta>
-                     <v-spacer class="hidden-sm-and-down" />
-                </v-col>
 
-
-
-                <v-col
-                  cols="12"
-                  class="text-right"
-                >
-                  <btn
-                        color="primary"
-                        fab
-                        small
-                        :texto="!$route.params.id ? 'Guardar Empresa' : 'Actualizar Empresa'"
-                        textoIcon="mdi-content-save"
-                        margenes="margin-left:5px"
-                        v-on:accion="guardar"
-                        :disabled="!valid"
-                      >
-                      </btn>
-
-                </v-col>
               </v-row>
-            </v-container>
-          </v-form>
-        </material-card>
-      </v-col>
-    </v-row>
-    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
-  </v-container>
 </template>
 <script>
 import Btn from '../../../components/Layout/App/Btn.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import Snackbar from '../../../components/Layout/App/Snackbar'
-import PuntoVenta from '../../../components/view/Empresa/PuntoVenta.vue'
-//import PuntoVenta from '../../../components/view/Empresa/PuntoVenta'
 const msgError = process.env.VUE_APP_MSG_ERROR
 
 export default {
+  props: ['puntoventa','index'],
   data: () => ({
     valid: true,
     snackbar: false,
@@ -171,7 +116,7 @@ export default {
     ],
 
   }),
-  components: { PuntoVenta, Snackbar, MaterialCard, Btn, PuntoVenta },
+  components: { Snackbar, MaterialCard, Btn },
   mounted() {
     if(this.$route.params.id){
       this.getEmpresa(this.$route.params.id)
@@ -180,13 +125,22 @@ export default {
     }
   },
   computed: {
-    ...mapState('empresa', ['empresa','permisosEmpresas'])
+    ...mapState('empresa', ['empresa','permisosEmpresas','puntoventadatosempresa']),
+    datospuntoventaempresa: {
+      get () {
+        return this.puntoventadatosempresa
+      },
+      set (value) {
+        this.datosIguales(value)
+      }
+    }
   },
   methods: {
     ...mapActions('empresa', ['guardarEmpresa','getEmpresa']),
     ...mapMutations('empresa', ['limpiarEmpresa','datosIguales']),
 
     guardar() {
+      alert(this.puntoventadatosempresa)
       this.$refs.form.validate()
 
       if(this.valid){
