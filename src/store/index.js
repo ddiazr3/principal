@@ -5,6 +5,13 @@ import usuario from '@/modules/usuario'
 import roles from '@/modules/Role'
 import empresa from '@/modules/Empresa'
 import puntoventasinstance from '@/modules/PuntoVentas'
+
+//catalogos
+import marca from '@/modules/Catalogos/Marcas'
+import linea from '@/modules/Catalogos/Lineas'
+import categoria from '@/modules/Catalogos/Categorias'
+import proveedor from '@/modules/Catalogos/Proveedores'
+
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 
@@ -28,15 +35,17 @@ export default new Vuex.Store({
         },
         errorCatch(state, bool) {
             const url = process.env.VUE_APP_URL_API + '/api/usuarios/logout'
+
             axios.post(url)
-                .then((response) => {
+                .then((response) => {})
+                .catch((e) => {}).finally((e) => {
+
+                }).finally((f) => {
                     localStorage.removeItem("bool")
                     localStorage.removeItem("modulo")
                     localStorage.removeItem("usuario")
                     localStorage.removeItem("validarpath")
                     window.location.href = '/'
-                })
-                .catch((e) => {}).finally((e) => {
 
                 })
 
@@ -49,6 +58,10 @@ export default new Vuex.Store({
         usuario,
         empresa,
         puntoventasinstance,
-        roles
+        roles,
+        marca,
+        linea,
+        categoria,
+        proveedor
     }
 })

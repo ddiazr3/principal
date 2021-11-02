@@ -14,8 +14,8 @@
           icon="mdi-account-outline"
         >
           <template #title>
-            <h3 v-if="!$route.params.id ">Crear Punto de Ventas</h3>
-            <h3 v-if="$route.params.id">Editar Punto de Ventas</h3> —
+            <h3 v-if="!$route.params.id ">Crear Linea</h3>
+            <h3 v-if="$route.params.id">Editar Linea</h3> —
             <small class="text-body-1">Complete todos los datos</small>
             <btn
               color="blue"
@@ -25,7 +25,7 @@
               right
               link
               exact
-              to="/configuracion/puntoventas"
+              to="/catalogos/lineas"
               texto="Regresar"
               textoIcon="mdi-arrow-left-thick"
             >
@@ -40,57 +40,33 @@
               <v-row>
                 <v-col
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <v-text-field
                     color="purple"
-                    label="Nombre"
+                    label="Nombre Linea"
                     :rules="textRules"
-                     v-model="puntoventa.nombre"
+                     v-model="linea.nombre"
                       :max="25"
                      :counter="25"
                   />
                 </v-col>
 
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    color="purple"
-                    label="Direccion"
-                    :rules="textCincuentaRules"
-                    :counter="50"
-                    max-length="25"
-                     v-model="puntoventa.direccion"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    color="purple"
-                    label="NIT"
-                    v-model="puntoventa.nit"
-                    :rules="textNumberRules"
-                    :counter="10"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    color="purple"
-                    label="Telefono"
-                    v-model="puntoventa.telefono"
-                    :rules="textNumberTelRules"
-                    :counter="8"
-                  />
-                </v-col>
+                 <v-col
+                    cols="12"
+                    md="6"
+                  >
+                    <v-autocomplete
+                      :items="marcas"
+                      item-text="nombre"
+                      item-value="id"
+                      dense
+                      filled
+                      label="Marcas"
+                      v-model="linea.marcaid"
+                      :rules="selectRules"
+                    ></v-autocomplete>
+                  </v-col>
 
 
                 <v-col
@@ -101,7 +77,7 @@
                         color="primary"
                         fab
                         small
-                        :texto="!$route.params.id ? 'Guardar Punto de Venta' : 'Actualizar Punto de Venta'"
+                        :texto="!$route.params.id ? 'Guardar Linea' : 'Actualizar Linea'"
                         textoIcon="mdi-content-save"
                         margenes="margin-left:5px"
                         v-on:accion="guardar"
@@ -111,26 +87,7 @@
 
                 </v-col>
               </v-row>
-
-              <template v-if="puntoventa.igualprincipal">
-                <v-checkbox
-                  class="checkbox-role"
-                  v-model="mismosProductos"
-                  :label="'Utiliza los mismos productos del almacen?'"
-                ></v-checkbox>
-                 <productos v-if="!mismosProductos"></productos>
-              </template>
-
-              <template v-else>
-                  <productos></productos>
-              </template>
-
-
-
             </v-container>
-
-
-
           </v-form>
         </material-card>
       </v-col>
@@ -143,8 +100,6 @@ import Btn from '../../../components/Layout/App/Btn.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import Snackbar from '../../../components/Layout/App/Snackbar'
-import Productos from '../../../components/view/PuntoVenta/Productos.vue'
-//import PuntoVenta from '../../../components/view/Empresa/PuntoVenta'
 const msgError = process.env.VUE_APP_MSG_ERROR
 
 export default {
@@ -155,7 +110,6 @@ export default {
     textoSnackbar: null,
     show1: true,
     show2: false,
-    mismosProductos: true,
     textRules: [
       v => !!v || 'Campo es requerido',
       v => (v && v.length <= 25) || 'Ingrese menos de 25 carcateres'
@@ -174,33 +128,38 @@ export default {
       v => (v && v.length <= 8 && v.length >=8) || 'Ingrese 8 digitos',
       v => /[0-9]/.test(v) || 'El campo es de tipo numerico',
     ],
+    selectRules: [
+      v => !!v || 'Campo es requerido'
+    ]
 
   }),
-  components: { Snackbar, MaterialCard, Btn, Productos },
+  components: { Snackbar, MaterialCard, Btn },
   mounted() {
+    this.getCatalogos();
     if(this.$route.params.id){
-      this.getPuntoVenta(this.$route.params.id)
+      this.getLinea(this.$route.params.id)
     }else{
-      this.limpiarPuntoVenta()
+      this.limpiarLinea()
     }
   },
   computed: {
-    ...mapState('puntoventasinstance', ['puntoventa'])
+    ...mapState('linea', ['linea','marcas'])
   },
   methods: {
-    ...mapActions('puntoventasinstance', ['guardarPuntoVenta','getPuntoVenta']),
-    ...mapMutations('puntoventasinstance', ['limpiarPuntoVenta','datosIguales']),
+    ...mapActions('linea', ['getCatalogos','guardarLinea','getLinea']),
+    ...mapMutations('linea', ['limpiarLinea']),
+
     guardar() {
       this.$refs.form.validate()
 
       if(this.valid){
-        this.guardarPuntoVenta(this.puntoventa)
+        this.guardarLinea(this.linea)
           .then((res) => {
             this.snackbar = true
             this.colorSnackbar = "success"
             this.textoSnackbar = "Datos creados con éxito"
-            this.$router.push('/configuracion/puntoventas')
-            this.limpiarPuntoVenta()
+            this.$router.push('/catalogos/lineas')
+            this.limpiarLinea()
           }).catch((error) => {
           if(error.response.status == 401){
             this.$store.commit('errorCatch')

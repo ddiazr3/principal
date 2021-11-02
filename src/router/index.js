@@ -7,6 +7,7 @@ import Login from '../views/Login.vue'
 import Contrasenia from '../views/Contrasenia.vue'
 import Bienvenida from '../views/Bienvenida.vue'
 import Configuracion from '../views/Configuracion/Configuracion.vue'
+import Catalogos from '../views/Catalogos/Catalogos.vue'
 
 // rutas de usuarios
 import ListUser from '../views/Configuracion/Usuario/List.vue'
@@ -23,6 +24,22 @@ import CreateEmpresa from '../views/Configuracion/Empresa/Create.vue'
 // rutas de punto de ventas
 import ListPuntoVentas from '../views/Configuracion/PuntoVentas/List.vue'
 import CreatePuntoVentas from '../views/Configuracion/PuntoVentas/Create.vue'
+
+//ruta para marcas
+import ListMarcas from '../views/Catalogos/Marcas/List.vue'
+import CreateMarcas from '../views/Catalogos/Marcas/Create.vue'
+
+//ruta para lineas
+import ListLineas from '../views/Catalogos/Lineas/List.vue'
+import CreateLineas from '../views/Catalogos/Lineas/Create.vue'
+
+//ruta para categorias
+import ListCategorias from '../views/Catalogos/Categorias/List.vue'
+import CreateCategorias from '../views/Catalogos/Categorias/Create.vue'
+
+//ruta para proveedores
+import ListProveedores from '../views/Catalogos/Proveedores/List.vue'
+import CreateProveedores from '../views/Catalogos/Proveedores/Create.vue'
 
 
 import CryptoJS from 'crypto-js'
@@ -147,6 +164,107 @@ const routes = [{
                 path: 'usuarios/edit/:id',
                 component: CreateUser,
                 name: 'usuariosedit',
+                meta: {
+                    requiresAuth: true
+                }
+            }
+        ]
+    },
+    {
+        path: '/catalogos',
+        component: Catalogos,
+        children: [{
+                path: 'marcas',
+                component: ListMarcas,
+                name: 'marcas',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'marcas/create',
+                component: CreateMarcas,
+                name: 'marcascreate',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'marcas/edit/:id',
+                component: CreateMarcas,
+                name: 'marcasedit',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'lineas',
+                component: ListLineas,
+                name: 'lineas',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'lineas/create',
+                component: CreateLineas,
+                name: 'lineascreate',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'lineas/edit/:id',
+                component: CreateLineas,
+                name: 'lineasedit',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'categorias',
+                component: ListCategorias,
+                name: 'categorias',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'categorias/create',
+                component: CreateCategorias,
+                name: 'categoriascreate',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'categorias/edit/:id',
+                component: CreateCategorias,
+                name: 'categoriasedit',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'proveedores',
+                component: ListProveedores,
+                name: 'proveedores',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'proveedores/create',
+                component: CreateProveedores,
+                name: 'proveedorescreate',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'proveedores/edit/:id',
+                component: CreateProveedores,
+                name: 'proveedoresedit',
                 meta: {
                     requiresAuth: true
                 }
