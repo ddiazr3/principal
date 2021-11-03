@@ -133,7 +133,6 @@ import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
-import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
 import Unauthorized from '../../Unauthorized'
 
 export default {

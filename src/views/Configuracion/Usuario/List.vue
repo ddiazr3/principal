@@ -110,7 +110,7 @@
                         color="error"
                         fab
                         small
-                        texto="Eliminar Usuario"
+                        texto="Desactivar Usuario"
                         textoIcon="mdi-delete-forever"
                         margenes="margin-left:5px"
                          :idrecibir="dato.id"
@@ -150,7 +150,6 @@ import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapMutations,mapActions, mapGetters } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
-import { activarUsuario, exportarUsuario } from '../../../modules/usuario/actions'
 import Unauthorized from '../../Unauthorized.vue'
 
 export default {

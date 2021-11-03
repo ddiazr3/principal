@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import layout from '@/modules/Layout'
-import usuario from '@/modules/usuario'
-import roles from '@/modules/Role'
-import empresa from '@/modules/Empresa'
-import puntoventasinstance from '@/modules/PuntoVentas'
+import usuario from '@/modules/Configuracion/usuario'
+import roles from '@/modules/Configuracion/Role'
+import empresa from '@/modules/Configuracion/Empresa'
+import puntoventasinstance from '@/modules/Configuracion/PuntoVentas'
 
 //catalogos
 import marca from '@/modules/Catalogos/Marcas'
 import linea from '@/modules/Catalogos/Lineas'
 import categoria from '@/modules/Catalogos/Categorias'
 import proveedor from '@/modules/Catalogos/Proveedores'
+import producto from '@/modules/Catalogos/Productos'
 
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
@@ -62,6 +63,7 @@ export default new Vuex.Store({
         marca,
         linea,
         categoria,
-        proveedor
+        proveedor,
+        producto
     }
 })

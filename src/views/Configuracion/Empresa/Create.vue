@@ -96,6 +96,69 @@
                   cols="12"
                   md="12"
                 >
+                 <h1>Configuración de la Bodega</h1>
+                </v-col>
+
+                <v-col cols="12" md="12">
+                  <v-checkbox
+                      class="checkbox-role"
+                      v-model="empresa.bodega.igualempresa"
+                      label="Datos de la Bodega igual a la de la empresa"
+                  >
+                  </v-checkbox>
+                </v-col>
+
+                <template v-if="!empresa.bodega.igualempresa">
+
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                <v-text-field
+                    color="purple"
+                    label="Nombre"
+                    :rules="textRules"
+                    v-model="empresa.bodega.nombre"
+                    :max="25"
+                    :counter="25"
+                  />
+
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    color="purple"
+                    label="Direccion"
+                    :rules="textCincuentaRules"
+                    :counter="50"
+                    max-length="25"
+                     v-model="empresa.bodega.direccion"
+                  />
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                  <v-text-field
+                    color="purple"
+                    label="Telefono"
+                    v-model="empresa.bodega.telefono"
+                    :rules="textNumberTelRules"
+                    :counter="8"
+                  />
+                </v-col>
+
+                </template>
+
+
+                <v-col
+                  cols="12"
+                  md="12"
+                >
                  <h1>Configuración del punto de ventas</h1>
                 </v-col>
                 <v-col cols="12" md="12" v-for="(item, i) in empresa.punto_ventas" :key="i" >

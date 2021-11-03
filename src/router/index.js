@@ -41,6 +41,10 @@ import CreateCategorias from '../views/Catalogos/Categorias/Create.vue'
 import ListProveedores from '../views/Catalogos/Proveedores/List.vue'
 import CreateProveedores from '../views/Catalogos/Proveedores/Create.vue'
 
+//ruta para productos
+import ListProductos from '../views/Catalogos/Productos/List.vue'
+import CreateProductos from '../views/Catalogos/Productos/Create.vue'
+
 
 import CryptoJS from 'crypto-js'
 
@@ -265,6 +269,30 @@ const routes = [{
                 path: 'proveedores/edit/:id',
                 component: CreateProveedores,
                 name: 'proveedoresedit',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'productos',
+                component: ListProductos,
+                name: 'productos',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'productos/create',
+                component: CreateProductos,
+                name: 'productoscreate',
+                meta: {
+                    requiresAuth: true
+                }
+            },
+            {
+                path: 'productos/edit/:id',
+                component: CreateProductos,
+                name: 'productosedit',
                 meta: {
                     requiresAuth: true
                 }
