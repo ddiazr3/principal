@@ -52,6 +52,15 @@
                     v-on:accion="exportar"
                   >
                   </btn>
+                    <!--v-btn block
+                        link
+                        href="C:\Users\dany\Documents\VueJs\Lumen\Control-lumen\storage\app\marcas.xlsx"
+                        target="_blank"
+                        >
+                          Block Button
+                    </v-btn-->
+                  <a href="C:\Users\dany\Documents\VueJs\Lumen\Control-lumen\storage\app\marcas.xlsx" target="_blank">Dow</a>
+
               </v-col>
               <v-col
                   cols="12"
@@ -227,7 +236,7 @@ export default {
         this.exportarMarca(data).
           then((resp) => {
             console.log(resp.data )
-            var data = resp.data;
+           /* var data = resp.data;
             var bytes = new Array(data.length);
             console.log("bytes", bytes);
             for (var i = 0; i < data.length; i++) {
@@ -237,14 +246,16 @@ export default {
             console.log(blob);
             var blob = new Blob([data], { type: ".xlsx" });
             console.log(blob);
-            let objectURL = window.URL.createObjectURL(blob);
-            let anchor = document.createElement("a");
+            let objectURL = window.URL.createObjectURL(blob);*/
+            window.open(resp.data);
 
-            anchor.href = objectURL;
+           /* let anchor = document.createElement("a");
+
+            anchor.href = resp.data;
             anchor.download = 'marcas.xlsx';
             anchor.click();
 
-            URL.revokeObjectURL(objectURL);
+            URL.revokeObjectURL(resp.data);*/
            /* var fileURL = window.URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.ms-excel;charset=utf-8'}));
             console.log(fileURL)
             var fileLink = document.createElement('a');
