@@ -52,14 +52,6 @@
                     v-on:accion="exportar"
                   >
                   </btn>
-                    <!--v-btn block
-                        link
-                        href="C:\Users\dany\Documents\VueJs\Lumen\Control-lumen\storage\app\marcas.xlsx"
-                        target="_blank"
-                        >
-                          Block Button
-                    </v-btn-->
-                  <a href="C:\Users\dany\Documents\VueJs\Lumen\Control-lumen\storage\app\marcas.xlsx" target="_blank">Dow</a>
 
               </v-col>
               <v-col
@@ -235,34 +227,13 @@ export default {
         }
         this.exportarMarca(data).
           then((resp) => {
-            console.log(resp.data )
-           /* var data = resp.data;
-            var bytes = new Array(data.length);
-            console.log("bytes", bytes);
-            for (var i = 0; i < data.length; i++) {
-              bytes[i] = data.charCodeAt(i);
-            }
-            data = new Uint8Array(bytes);
-            console.log(blob);
-            var blob = new Blob([data], { type: ".xlsx" });
-            console.log(blob);
-            let objectURL = window.URL.createObjectURL(blob);*/
-            window.open(resp.data);
+          var fileURL = window.URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.ms-excel;charset=utf-8'}));
+          var fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', 'marcas.xlsx');
+          document.body.appendChild(fileLink);
+          fileLink.click();
 
-           /* let anchor = document.createElement("a");
-
-            anchor.href = resp.data;
-            anchor.download = 'marcas.xlsx';
-            anchor.click();
-
-            URL.revokeObjectURL(resp.data);*/
-           /* var fileURL = window.URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.ms-excel;charset=utf-8'}));
-            console.log(fileURL)
-            var fileLink = document.createElement('a');
-            fileLink.href = fileURL;
-            fileLink.setAttribute('download', 'marcas.xlsx');
-            document.body.appendChild(fileLink);
-            fileLink.click();*/
         }).
           catch((error) => {
           console.log("reporno del api error")

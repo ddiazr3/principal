@@ -49,3 +49,10 @@ export async function activarProducto({ commit }, id) {
     const url = process.env.VUE_APP_URL_API + '/api/productos/' + id + '/activar'
     return axios.post(url)
 }
+
+export async function exportarProducto({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/productos/exportar'
+  return axios.post(url, data,{
+    responseType: 'arraybuffer'
+  })
+}

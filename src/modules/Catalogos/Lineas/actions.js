@@ -65,3 +65,10 @@ export async function getCatalogos({ commit }) {
             commit('setLoading', false, { root: true })
         )
 }
+
+export async function exportarLinea({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/lineas/exportar'
+  return axios.post(url, data,{
+    responseType: 'arraybuffer'
+  })
+}

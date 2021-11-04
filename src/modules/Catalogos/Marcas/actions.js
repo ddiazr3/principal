@@ -47,5 +47,7 @@ export async function eliminarMarca({ commit }, id) {
 
 export async function exportarMarca({ commit }, data) {
     const url = process.env.VUE_APP_URL_API + '/api/marcas/exportar'
-    return axios.post(url, data)
+    return axios.post(url, data,{
+      responseType: 'arraybuffer'
+    })
 }

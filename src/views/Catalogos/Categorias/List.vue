@@ -37,6 +37,50 @@
           </template>
           <v-container class="py-0">
             <search :items="items" :nameItems="nameItems" :valoresBuscar="valoresBuscar" v-on:buscar="buscar" v-on:limipiar="limipiarBuscador" ></search>
+            <v-row>
+              <v-col cols="12" md="1" class="text-left">
+                <btn
+                  margenes="margin-top: 12px"
+                  color="success"
+                  fab
+                  small
+                  texto="Exportar Categoria"
+                  textoIcon="mdi-file-excel-box"
+                  v-on:accion="exportar"
+                >
+                </btn>
+
+              </v-col>
+              <v-col
+                cols="12"
+                md="3"
+                class="text-right"
+              >
+                <v-file-input
+                  accept=".xlsx"
+                  placeholder="Pick an avatar"
+                  prepend-icon="mdi-file-excel-outline"
+                  label="Archivo Excel"
+                >
+                </v-file-input>
+              </v-col>
+              <v-col
+                cols="12"
+                md="1"
+                class="text-left"
+              >
+                <btn
+                  margenes="margin-left: 0px;margin-top: 12px"
+                  color="blue"
+                  fab
+                  small
+                  texto="Subir Archivo"
+                  textoIcon="mdi-cloud-upload-outline"
+                  v-on:accion="subir"
+                >
+                </btn>
+              </v-col>
+            </v-row>
             <v-simple-table fixed-header style="height: 525px;">
               <thead>
                   <tr>
@@ -136,7 +180,7 @@ export default {
     ...mapState('categoria', ['categorias', 'totalPage', 'page', 'permisosCategorias'])
   },
   methods: {
-    ...mapActions('categoria', ['getCategorias','eliminarCategoria']),
+    ...mapActions('categoria', ['getCategorias','eliminarCategoria','exportarCategoria']),
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
@@ -161,7 +205,33 @@ export default {
       this.valoresBuscar = { item0: null, search: null }
       let url = 'page='+this.page
       this.getCategorias(url)
-    }
+    },
+    exportar(){
+      var data = {
+        item0 : null,
+        datobuscar: null,
+        search: null
+      }
+      if(this.valoresBuscar.item0 != null && this.valoresBuscar.search != null){
+        data.search = true
+        data.datobuscar = this.valoresBuscar.search
+        data.item0 = this.valoresBuscar.item0
+      }
+      this.exportarCategoria(data).
+      then((resp) => {
+        var fileURL = window.URL.createObjectURL(new Blob([resp.data], {type: 'application/vnd.ms-excel;charset=utf-8'}));
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', 'categorias.xlsx');
+        document.body.appendChild(fileLink);
+        fileLink.click();
+
+      }).
+      catch((error) => {
+        console.log("reporno del api error")
+        console.log(error)
+      })
+    },
   }
 }
 </script>

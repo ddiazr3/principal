@@ -44,3 +44,10 @@ export async function eliminarProveedores({ commit }, id) {
     const url = process.env.VUE_APP_URL_API + '/api/proveedores/' + id + '/eliminar'
     return axios.post(url)
 }
+
+export async function exportarProveedor({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/proveedores/exportar'
+  return axios.post(url, data,{
+    responseType: 'arraybuffer'
+  })
+}

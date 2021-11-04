@@ -44,3 +44,10 @@ export async function eliminarCategorias({ commit }, id) {
     const url = process.env.VUE_APP_URL_API + '/api/categorias/' + id + '/eliminar'
     return axios.post(url)
 }
+
+export async function exportarCategoria({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/categorias/exportar'
+  return axios.post(url, data,{
+    responseType: 'arraybuffer'
+  })
+}

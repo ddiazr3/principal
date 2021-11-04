@@ -15,7 +15,7 @@ export function setLinea(state, linea) {
 }
 
 export function limpiarLinea(state) {
-    state.marca = {
+    state.linea = {
         id: 0,
         nombre: null,
         marcaid: null,
