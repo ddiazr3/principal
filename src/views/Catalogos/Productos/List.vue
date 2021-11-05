@@ -51,25 +51,43 @@
                 </btn>
 
               </v-col>
+              <v-col cols="3" md="1" >
+                <div class="float-right">
+                  <info-format
+                    title="Producto"
+                    :head='["1","A(nombre)","B(Descripción)","C(Código)","D(Cantidad)","E(Precio)","F(idMarca)","G(idLinea)","H(idProveedor)","I(idCategoria)","..."]'
+                    :body='[
+                              ["productox","descripcionx","codigox","100","100.50","1","1","3","2"," "],
+                              ["productoy","descripciony","codigoy","100","100.50","1","1","3","2"," "]
+                            ]'
+                  ></info-format>
+                </div>
+
+              </v-col>
               <v-col
-                cols="12"
+                cols="6"
                 md="3"
                 class="text-right"
               >
+
                 <v-file-input
                   accept=".xlsx"
                   placeholder="Pick an avatar"
                   prepend-icon="mdi-file-excel-outline"
                   label="Archivo Excel"
+                  v-model="file"
                 >
                 </v-file-input>
               </v-col>
               <v-col
-                cols="12"
-                md="1"
+                cols="3"
+                md="3"
                 class="text-left"
               >
+
+
                 <btn
+                  v-if="file"
                   margenes="margin-left: 0px;margin-top: 12px"
                   color="blue"
                   fab
@@ -185,10 +203,11 @@
 import Btn from '../../../components/Layout/App/Btn.vue'
 import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized'
 import Snackbar from '../../../components/Layout/App/Snackbar'
+import InfoFormat from '../../../components/Layout/App/InfoFormat'
 
 export default {
   data () {
@@ -196,6 +215,7 @@ export default {
       snackbar: false,
       colorSnackbar: "dark",
       textoSnackbar: null,
+      file:null,
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
       valoresBuscar: {
@@ -216,7 +236,7 @@ export default {
       ],
     }
   },
-  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante },
+  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante, InfoFormat },
   mounted () {
 
     //JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)),
@@ -233,7 +253,8 @@ export default {
     ...mapState('producto', ['productos', 'totalPage', 'page', 'permisosProductos'])
   },
   methods: {
-    ...mapActions('producto', ['getProductos','eliminarProductos','activarProducto','exportarProducto']),
+    ...mapActions('producto', ['getProductos','eliminarProductos','activarProducto','exportarProducto','importProducto']),
+    ...mapMutations(['setLoading']),
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
@@ -307,7 +328,36 @@ export default {
       })
     },
     subir(){
+      this.setLoading(true)
+      if(this.file == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "Ingrese Archivo"
+        return
+      }
 
+      let formData = new FormData();
+      formData.append('file',this.file)
+
+      this.importProducto(formData).
+      then((resp) => {
+        console.warn(resp)
+        let url = 'page='+this.page
+        this.getProductos(url)
+      }).
+      catch((error) => {
+        if(error.response.status == 401){
+          this.$store.commit('errorCatch')
+          return
+        }
+        this.snackbar = true
+        this.colorSnackbar = "dark"
+        this.textoSnackbar = error.response.data.message
+
+      }).finally((e) => {
+        this.setLoading(false)
+        this.file = null
+      })
     }
   }
 }

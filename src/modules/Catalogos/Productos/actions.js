@@ -56,3 +56,12 @@ export async function exportarProducto({ commit }, data) {
     responseType: 'arraybuffer'
   })
 }
+
+export async function importProducto({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/productos/import'
+  return axios.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
