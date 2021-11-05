@@ -9,14 +9,15 @@ export function setPuntoVentas(state, response) {
 }
 
 export function setPuntoVenta(state, puntoventa) {
-    state.puntoventa.nombre = puntoventa.nombre
-    state.puntoventa.direccion = puntoventa.direccion
-    state.puntoventa.telefono = puntoventa.telefono
-    state.puntoventa.nit = puntoventa.nit
-    state.puntoventa.idcrypt = puntoventa.idcrypt
-    state.puntoventa.id = puntoventa.id
-    state.puntoventa.activo = puntoventa.activo
-    state.puntoventa.igualprincipal = puntoventa.igualprincipal
+    state.productosget = puntoventa.productos
+    state.puntoventa.nombre = puntoventa.puntoventa.nombre
+    state.puntoventa.direccion = puntoventa.puntoventa.direccion
+    state.puntoventa.telefono = puntoventa.puntoventa.telefono
+    state.puntoventa.nit = puntoventa.puntoventa.nit
+    state.puntoventa.idcrypt = puntoventa.puntoventa.idcrypt
+    state.puntoventa.id = puntoventa.puntoventa.id
+    state.puntoventa.activo = puntoventa.puntoventa.activo
+    state.puntoventa.igualprincipal = puntoventa.puntoventa.igualprincipal
 }
 
 
@@ -28,6 +29,8 @@ export function limpiarPuntoVenta(state) {
         nit: null,
         telefono: null,
         empresaid: null,
-        activo: false
+        activo: false,
+        productos: [],
     }
+   state.productosget = null
 }

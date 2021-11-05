@@ -2,6 +2,7 @@ export default {
     namespaced: true,
     puntoventas: [],
     permisospuntoventas: [],
+    productosget: null,
     puntoventa: {
         id: 0,
         nombre: null,
@@ -11,7 +12,9 @@ export default {
         empresaid: null,
         activo: null,
         igualprincipal: null,
+        productos: [],
     },
+
     totalPage: 0,
     page: 1
 }

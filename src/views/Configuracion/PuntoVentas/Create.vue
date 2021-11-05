@@ -93,23 +93,7 @@
                 </v-col>
 
 
-                <v-col
-                  cols="12"
-                  class="text-right"
-                >
-                  <btn
-                        color="primary"
-                        fab
-                        small
-                        :texto="!$route.params.id ? 'Guardar Punto de Venta' : 'Actualizar Punto de Venta'"
-                        textoIcon="mdi-content-save"
-                        margenes="margin-left:5px"
-                        v-on:accion="guardar"
-                        :disabled="!valid"
-                      >
-                      </btn>
 
-                </v-col>
               </v-row>
 
               <template v-if="puntoventa.igualprincipal">
@@ -118,14 +102,33 @@
                   v-model="mismosProductos"
                   :label="'Utiliza los mismos productos del almacen?'"
                 ></v-checkbox>
-                 <productos v-if="!mismosProductos"></productos>
+                 <h3 class="text-center" v-if="!mismosProductos" >Elegir Producto</h3>
+                 <productos v-if="!mismosProductos" :productos="productosget"></productos>
               </template>
 
               <template v-else>
-                  <productos></productos>
+                  <h3 class="text-center">Elegir Producto</h3>
+                  <br>
+                  <productos :productos="productosget" ></productos>
               </template>
 
+              <v-col
+                cols="12"
+                class="text-right"
+              >
+                <btn
+                  color="primary"
+                  fab
+                  small
+                  :texto="!$route.params.id ? 'Guardar Punto de Venta' : 'Actualizar Punto de Venta'"
+                  textoIcon="mdi-content-save"
+                  margenes="margin-left:5px"
+                  v-on:accion="guardar"
+                  :disabled="!valid"
+                >
+                </btn>
 
+              </v-col>
 
             </v-container>
 
@@ -180,12 +183,12 @@ export default {
   mounted() {
     if(this.$route.params.id){
       this.getPuntoVenta(this.$route.params.id)
-    }else{
+     }else{
       this.limpiarPuntoVenta()
     }
   },
   computed: {
-    ...mapState('puntoventasinstance', ['puntoventa'])
+    ...mapState('puntoventasinstance', ['puntoventa','productosget'])
   },
   methods: {
     ...mapActions('puntoventasinstance', ['guardarPuntoVenta','getPuntoVenta']),
@@ -194,6 +197,9 @@ export default {
       this.$refs.form.validate()
 
       if(this.valid){
+
+        this.puntoventa.productos = this.productosget
+
         this.guardarPuntoVenta(this.puntoventa)
           .then((res) => {
             this.snackbar = true
