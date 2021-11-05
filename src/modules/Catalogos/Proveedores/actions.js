@@ -51,3 +51,12 @@ export async function exportarProveedor({ commit }, data) {
     responseType: 'arraybuffer'
   })
 }
+
+export async function importProveedor({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/proveedores/import'
+  return axios.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

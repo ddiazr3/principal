@@ -61,6 +61,7 @@
                   placeholder="Pick an avatar"
                   prepend-icon="mdi-file-excel-outline"
                   label="Archivo Excel"
+                  v-model="file"
                 >
                 </v-file-input>
               </v-col>
@@ -70,6 +71,7 @@
                 class="text-left"
               >
                 <btn
+                  v-if="file"
                   margenes="margin-left: 0px;margin-top: 12px"
                   color="blue"
                   fab
@@ -130,6 +132,7 @@
         </material-card>
       </v-col>
     </v-row>
+    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
   </template>
   </div>
@@ -138,13 +141,18 @@
 import Btn from '../../../components/Layout/App/Btn.vue'
 import Search from '../../../components/Layout/widgets/Search.vue'
 import MaterialCard from '../../../components/view/MaterialCard.vue'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized'
+import Snackbar from '../../../components/Layout/App/Snackbar'
 
 export default {
   data () {
     return {
+      file: null,
+      snackbar: false,
+      colorSnackbar: "dark",
+      textoSnackbar: null,
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
       valoresBuscar: {
@@ -165,7 +173,7 @@ export default {
       ],
     }
   },
-  components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
+  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
 
     //JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)),
@@ -182,7 +190,8 @@ export default {
     ...mapState('linea', ['lineas', 'totalPage', 'page', 'permisosLineas'])
   },
   methods: {
-    ...mapActions('linea', ['getLineas','eliminarLineas','exportarLinea']),
+    ...mapActions('linea', ['getLineas','eliminarLineas','exportarLinea','importLinea']),
+    ...mapMutations(['setLoading']),
     paginacion(val) {
       if(this.valoresBuscar.item0 != null){
           var url = 'page='+val+'+&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
@@ -207,6 +216,11 @@ export default {
       this.valoresBuscar = { item0: null, search: null }
       let url = 'page='+this.page
       this.getLineas(url)
+    },
+    cerrar(){
+      this.snackbar = false
+      this.colorSnackbar = "dark"
+      this.textoSnackbar = null
     },
     exportar(){
       var data = {
@@ -234,6 +248,38 @@ export default {
         console.log(error)
       })
     },
+
+    subir(){
+      this.setLoading(true)
+      if(this.file == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "Ingrese Archivo"
+        return
+      }
+
+      let formData = new FormData();
+      formData.append('file',this.file)
+
+      this.importLinea(formData).
+      then((resp) => {
+        let url = 'page='+this.page
+        this.getLineas(url)
+      }).
+      catch((error) => {
+        if(error.response.status == 401){
+          this.$store.commit('errorCatch')
+          return
+        }
+        this.snackbar = true
+        this.colorSnackbar = "dark"
+        this.textoSnackbar = error.response.message
+
+      }).finally((e) => {
+        this.setLoading(false)
+        this.file = null
+      })
+    }
   }
 }
 </script>

@@ -51,3 +51,12 @@ export async function exportarMarca({ commit }, data) {
       responseType: 'arraybuffer'
     })
 }
+
+export async function importMarca({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/marcas/import'
+  return axios.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

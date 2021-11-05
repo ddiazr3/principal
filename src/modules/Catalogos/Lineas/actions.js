@@ -72,3 +72,12 @@ export async function exportarLinea({ commit }, data) {
     responseType: 'arraybuffer'
   })
 }
+
+export async function importLinea({ commit }, data) {
+  const url = process.env.VUE_APP_URL_API + '/api/lineas/import'
+  return axios.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
