@@ -73,6 +73,11 @@ export async function exportarLinea({ commit }, data) {
   })
 }
 
+export async function eliminarLineas({ commit }, id) {
+  const url = process.env.VUE_APP_URL_API + '/api/lineas/' + id + '/eliminar'
+  return axios.post(url)
+}
+
 export async function importLinea({ commit }, data) {
   const url = process.env.VUE_APP_URL_API + '/api/lineas/import'
   return axios.post(url, data, {

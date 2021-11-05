@@ -87,6 +87,7 @@
         </material-card>
       </v-col>
     </v-row>
+    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
   </template>
   </div>
@@ -98,9 +99,13 @@ import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapActions, mapState } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized'
+import Snackbar from '../../../components/Layout/App/Snackbar'
 export default {
   data () {
     return {
+      snackbar: false,
+      colorSnackbar: "dark",
+      textoSnackbar: null,
       valoresBuscar: {
         item0: null,
         search: null
@@ -123,7 +128,7 @@ export default {
       ]
     }
   },
-  components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
+  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
     let url = 'page='+this.page
     this.getRoles(url);
@@ -148,9 +153,23 @@ export default {
       }
       this.getEmpresas(url)
     },
-    buscar(){
+    buscar() {
+      this.snackbar = false
+      this.colorSnackbar = ""
+      this.textoSnackbar = null
+      if(this.valoresBuscar.item0 == null && this.valoresBuscar.search  == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "No hay información a buscar"
+        return
+      }
       let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
       this.getRoles(url)
+    },
+    cerrar(){
+      this.snackbar = false
+      this.colorSnackbar = "dark"
+      this.textoSnackbar = null
     },
     limipiarBuscador(){
       this.valoresBuscar = { item0: null, search: null }

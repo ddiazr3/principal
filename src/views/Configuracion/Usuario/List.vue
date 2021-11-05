@@ -135,11 +135,12 @@
               </tbody>
             </v-simple-table>
             <pagiante :length="totalPage" v-on:cambiopagina="paginacion"></pagiante>
+
           </v-container>
         </material-card>
       </v-col>
     </v-row>
-
+    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
     </template>
   </div>
@@ -151,10 +152,14 @@ import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapMutations,mapActions, mapGetters } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized.vue'
+import Snackbar from '../../../components/Layout/App/Snackbar'
 
 export default {
   data () {
     return {
+      snackbar: false,
+      colorSnackbar: "dark",
+      textoSnackbar: null,
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
       valoresBuscar: {
@@ -183,7 +188,7 @@ export default {
       ],
     }
   },
-  components: { MaterialCard, Btn, Search, Pagiante, Unauthorized },
+  components: { Snackbar, MaterialCard, Btn, Search, Pagiante, Unauthorized },
   mounted () {
     let url = 'page='+this.page
     this.getUsuarios(url)
@@ -204,8 +209,22 @@ export default {
       this.getUsuarios(url)
     },
     buscar(data) {
+      this.snackbar = false
+      this.colorSnackbar = ""
+      this.textoSnackbar = null
+      if(this.valoresBuscar.item0 == null && this.valoresBuscar.search  == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "No hay información a buscar"
+        return
+      }
       let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
        this.getUsuarios(url)
+    },
+    cerrar(){
+      this.snackbar = false
+      this.colorSnackbar = "dark"
+      this.textoSnackbar = null
     },
     eliminar(id){
       this.eliminarUsuario(id).

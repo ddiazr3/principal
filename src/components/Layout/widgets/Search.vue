@@ -1,13 +1,13 @@
 <template>
 <div>
   <v-row>
-    <v-col cols="12" md="2" v-if="valoresBuscar.hasOwnProperty('de')">
+    <v-col cols="6" md="2" v-if="valoresBuscar.hasOwnProperty('de')">
       <v-text-field type="date"  v-model="valoresBuscar['de']"></v-text-field>
     </v-col>
-     <v-col cols="12" md="2" v-if="valoresBuscar.hasOwnProperty('a')">
+     <v-col cols="6" md="2" v-if="valoresBuscar.hasOwnProperty('a')">
         <v-text-field type="date"  v-model="valoresBuscar['a']"></v-text-field>
      </v-col>
-    <v-col cols="12" md="2" v-for="(itm, idx) in items" :key="itm.id">
+    <v-col cols="6" md="2" v-for="(itm, idx) in items" :key="itm.id">
       <v-autocomplete
         :items="itm"
         item-text="name"
@@ -19,7 +19,7 @@
       ></v-autocomplete>
     </v-col>
     <v-col
-     cols="12" md="2"
+     cols="6" md="2"
     >
       <v-text-field v-if="valoresBuscar.hasOwnProperty('search')"
         placeholder="Escribir ..."

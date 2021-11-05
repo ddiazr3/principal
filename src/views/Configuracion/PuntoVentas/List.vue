@@ -144,6 +144,7 @@
         </material-card>
       </v-col>
     </v-row>
+    <snackbar :colorSnackbar="colorSnackbar" :snackbar="snackbar" :textoSnackbar="textoSnackbar" @cerrar="cerrar"></snackbar>
   </v-container>
   </template>
   </div>
@@ -155,10 +156,14 @@ import MaterialCard from '../../../components/view/MaterialCard.vue'
 import { mapState, mapActions } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized'
+import Snackbar from '../../../components/Layout/App/Snackbar'
 
 export default {
   data () {
     return {
+      snackbar: false,
+      colorSnackbar: "dark",
+      textoSnackbar: null,
       // van a ver itemN porque se utilizan para los select
       // para search habran N tambiern porque seran los de cajas de texto de busqueda
       valoresBuscar: {
@@ -179,7 +184,7 @@ export default {
       ],
     }
   },
-  components: { Unauthorized, MaterialCard, Btn, Search, Pagiante },
+  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante },
   mounted () {
 
     //JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)),
@@ -205,9 +210,23 @@ export default {
       }
       this.getPuntoVentas(url)
     },
-    buscar(data) {
+    buscar() {
+      this.snackbar = false
+      this.colorSnackbar = ""
+      this.textoSnackbar = null
+      if(this.valoresBuscar.item0 == null && this.valoresBuscar.search  == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "No hay información a buscar"
+        return
+      }
       let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
        this.getPuntoVentas(url)
+    },
+    cerrar(){
+      this.snackbar = false
+      this.colorSnackbar = "dark"
+      this.textoSnackbar = null
     },
     eliminar(id){
       this.eliminarPuntoVentas(id).

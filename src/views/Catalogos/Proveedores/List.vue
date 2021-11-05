@@ -51,11 +51,25 @@
                 </btn>
 
               </v-col>
+              <v-col cols="3" md="1" >
+                <div class="float-right">
+                  <info-format
+                    title="Proveedores"
+                    :head='["1","A(nombre)","B(Dirección)","C(Telefono)","...."]'
+                    :body='[
+                              ["proveedorx","direccionx","telefonox"," "],
+                              ["proveedory","direcciony","telefonoy"," "]
+                            ]'
+                  ></info-format>
+                </div>
+
+              </v-col>
               <v-col
-                cols="12"
+                cols="6"
                 md="3"
                 class="text-right"
               >
+
                 <v-file-input
                   accept=".xlsx"
                   placeholder="Pick an avatar"
@@ -66,10 +80,12 @@
                 </v-file-input>
               </v-col>
               <v-col
-                cols="12"
-                md="1"
+                cols="3"
+                md="3"
                 class="text-left"
               >
+
+
                 <btn
                   v-if="file"
                   margenes="margin-left: 0px;margin-top: 12px"
@@ -147,6 +163,7 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import Pagiante from '../../../components/Layout/App/Pagiante.vue'
 import Unauthorized from '../../Unauthorized'
 import Snackbar from '../../../components/Layout/App/Snackbar'
+import InfoFormat from '../../../components/Layout/App/InfoFormat'
 
 export default {
   data () {
@@ -175,7 +192,7 @@ export default {
       ],
     }
   },
-  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante },
+  components: { Snackbar, Unauthorized, MaterialCard, Btn, Search, Pagiante,InfoFormat },
   mounted () {
 
     //JSON.parse(this.$CryptoJS.AES.decrypt(localStorage.getItem("usuario"), this.$keyCryp).toString(this.$CryptoJS.enc.Utf8)),
@@ -202,7 +219,16 @@ export default {
       }
       this.getProveedores(url)
     },
-    buscar(data) {
+    buscar() {
+      this.snackbar = false
+      this.colorSnackbar = ""
+      this.textoSnackbar = ""
+      if(this.valoresBuscar.item0 == null && this.valoresBuscar.search  == null){
+        this.snackbar = true
+        this.colorSnackbar = "error"
+        this.textoSnackbar = "No hay información a buscar"
+        return
+      }
       let url = 'page=1&search=true&item0='+this.valoresBuscar.item0+'&datobuscar='+this.valoresBuscar.search
        this.getProveedores(url)
     },
