@@ -8,6 +8,7 @@ export function setUsuarios(state, response) {
 }
 
 export function setUsuario(state, usuario ) {
+  state.usuario.puntoventaid = usuario.puntoventaid
   state.usuario.nombre = usuario.nombre
   state.usuario.contrasenia = usuario.password
   state.usuario.apellido = usuario.apellido
@@ -24,13 +25,14 @@ export function setUsuario(state, usuario ) {
 export function setCatalogos(state, response) {
     state.rolesUsuario = response.data.roles
     state.empresasUsuario = response.data.empresas
+    state.puntosVentasUsuario = response.data.puntoVenta
 }
 
 export function limpiarUsuario(state) {
   state.usuario = {
       id: 0,
       nombre: null,
-    contrasenia : null,
+      contrasenia : null,
       apellido: null,
       correo: null,
       dpi: null,

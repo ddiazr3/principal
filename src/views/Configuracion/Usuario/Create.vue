@@ -39,7 +39,7 @@
             <v-container class="py-0">
               <v-row>
 
-                <v-col
+                <v-col v-if="userLoged.isGod"
                   cols="12"
                   md="4"
                 >
@@ -52,6 +52,20 @@
                     label="Empresa"
                     v-model="usuario.empresaid"
                     :rules="selectRules"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col v-if="!userLoged.isGod"
+                       cols="12"
+                       md="4"
+                >
+                  <v-autocomplete
+                    :items="puntosVentasUsuario"
+                    item-text="nombre"
+                    item-value="id"
+                    dense
+                    filled
+                    label="Punto de Venta"
+                    v-model="usuario.puntoventaid"
                   ></v-autocomplete>
                 </v-col>
                 <v-col
@@ -243,6 +257,7 @@ export default {
         v => !!v || 'Campo es requerido',
         v => (v && v.length > 0) || 'Debe ingresar al menos uno'
     ],
+    puntosVentas : []
   }),
   components: { Snackbar, MaterialCard, Btn },
   mounted() {
@@ -254,7 +269,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('usuario', ['empresasUsuario','rolesUsuario','usuario'])
+    ...mapState('usuario', ['empresasUsuario','rolesUsuario','usuario','puntosVentasUsuario']),
+    ...mapState('layout', ['userLoged'])
   },
   methods: {
     ...mapActions('usuario', ['getCatalogos','guardarUsuario','getUsuario']),

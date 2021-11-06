@@ -61,7 +61,7 @@
                       label="Descripción"
                     />
                   </v-col>
-                  <v-col
+                  <v-col v-if="userLoged.isGod"
                     cols="12"
                     md="3"
                   >
@@ -137,7 +137,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('roles', ['empresasRole','modulosRole','rol'])
+    ...mapState('roles', ['empresasRole','modulosRole','rol']),
+    ...mapState('layout', ['userLoged'])
   },
   methods: {
     ...mapActions('roles', ['getCatalogos', 'guardarRole', 'getRole']),

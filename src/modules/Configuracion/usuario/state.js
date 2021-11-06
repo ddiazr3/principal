@@ -15,8 +15,10 @@ export default {
         rolesid: [],
         idcrypt : null,
         activo: null,
-        usuariocreacionid: null
+        usuariocreacionid: null,
+        puntoventaid: null
     },
+    puntosVentasUsuario : [],
     rolesUsuario: [],
     empresasUsuario: [],
     totalPage: 0,
