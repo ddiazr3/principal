@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Principal from '../views/Principal.vue'
-import Ventas from '../views/Ventas.vue'
-import Compras from '../views/Compras.vue'
+import Principal from '../views/Principal/Principal.vue'
+import Ventas from '../views/Principal/Ventas.vue'
+import Compras from '../views/Principal/Compras.vue'
 
 
 import Login from '../views/Login.vue'

@@ -6,6 +6,7 @@ import roles from '@/modules/Configuracion/Role'
 import empresa from '@/modules/Configuracion/Empresa'
 import puntoventasinstance from '@/modules/Configuracion/PuntoVentas'
 import compras from '@/modules/Principal/Compras'
+import ventas from '@/modules/Principal/Ventas'
 
 //catalogos
 import marca from '@/modules/Catalogos/Marcas'
@@ -65,6 +66,7 @@ export default new Vuex.Store({
         categoria,
         proveedor,
         producto,
-        compras
+        compras,
+      ventas
     }
 })

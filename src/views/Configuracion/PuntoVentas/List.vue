@@ -46,6 +46,7 @@
                     <th class="text-left">Telefono</th>
                     <th class="text-left">Activo</th>
                     <th class="text-left">Igual al principal</th>
+                    <th class="text-left">Empresa</th>
                     <th class="text-left">Opciones</th>
                   </tr>
               </thead>
@@ -55,6 +56,7 @@
                     <td class="text-left">{{ dato.direccion }}</td>
                     <td class="text-left">{{ dato.nit }}</td>
                     <td class="text-left">{{ dato.telefono }}</td>
+
                     <td class="text-left">
                        <v-chip
                          v-if="dato.activo"
@@ -95,6 +97,7 @@
                           No
                         </v-chip>
                     </td>
+                   <td class="text-left">{{ dato.empresa.nombre }}</td>
                     <td>
                       <btn
                         color="warning"

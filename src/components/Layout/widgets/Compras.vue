@@ -43,10 +43,10 @@
         <tr v-for="p in compra.detalleCompras">
           <td v-text="p.producto"></td>
           <td>
-            <v-text-field type="number" v-model="p.cantidad" />
+            <v-text-field type="number" v-model="p.cantidad" @input="count(p)"/>
           </td>
           <td>
-            <v-text-field type="number" v-model="p.precio" />
+            <v-text-field type="number" v-model="p.precio" @input="count(p)"/>
           </td>
           <td v-text="p.pago"></td>
           <th>
@@ -89,8 +89,10 @@
 
 <script>
 import BarItem from '../App/BarItem.vue'
-import { mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import Btn from '../App/Btn'
+import { saveCompra } from '../../../modules/Principal/Compras/actions'
+import { clearCompra } from '../../../modules/Principal/Compras/mutations'
 // import Swal from 'sweetalert2'
 // import 'sweetalert2/src/sweetalert2.scss'
 
@@ -117,6 +119,20 @@ export default {
 
   },
   methods: {
+    ...mapActions('compras', ['saveCompra']),
+    ...mapMutations('compras', ['clearCompra']),
+    count(object){
+      var data =  this.compra.detalleCompras.filter((e) => {
+        if(e.id == object.id){
+          let pago = e.cantidad * e.precio
+          e.pago = pago
+        }
+        return e
+      })
+      if(data.length){
+        this.venta.detalleVenta = data
+      }
+    },
     quitar(p){
       this.$swal({
         title: 'Seguro de eliminar el producto?',
@@ -136,8 +152,7 @@ export default {
       })
 
     },
-   comprar(){
-      console.log(this.compra)
+    comprar(){
      this.$swal({
        title: 'Seguro de realizar la compra?',
        icon: 'warning',
@@ -148,6 +163,18 @@ export default {
        cancelButtonText: 'No'
      }).then((result) => {
        if(result.isConfirmed){
+
+         this.saveCompra(this.compra).
+         then((res) => {
+           this.clearCompra()
+         })
+           .catch((e) => {
+             if (e.response.status == 401) {
+               this.$store.commit("errorCatch", true)
+               return
+             }
+             throw e;
+           })
 
        }
      })

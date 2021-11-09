@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import MaterialCard from '../components/view/MaterialCard.vue'
+import MaterialCard from '../../components/view/MaterialCard.vue'
 export default {
   components: { MaterialCard },
   data: () => ({

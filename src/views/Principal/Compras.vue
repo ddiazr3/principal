@@ -7,7 +7,7 @@
     <v-row justify="center">
       <v-col cols="12" md="12">
         <material-card
-          color="success"
+          color="pink lighten-1"
           full-header
         >
           <template #heading>
@@ -19,43 +19,57 @@
           </template>
           <v-container class="py-0">
             <v-row>
-              <v-col cols="12" md="4">
-                <autocomplete :valores="proveedores" :idselect="'1'" @actualizarvalor="actualizarvalor" :label="'Proveedores'" v-bind:clear="clear"></autocomplete>
-              </v-col>
-              <v-col cols="12" md="4">
-                <autocomplete :valores="categorias" :idselect="'2'" @actualizarvalor="actualizarvalor" :label="'Categorias'"  v-bind:clear="clear"></autocomplete>
-              </v-col>
-              <v-col cols="12" md="4">
-                <autocomplete :valores="marcas" :idselect="'3'" @actualizarvalor="actualizarvalor" :label="'Marcas'"  v-bind:clear="clear"></autocomplete>
-              </v-col>
-              <v-col cols="12" md="4" v-if="this.lineashow.length > 0">
-                <autocomplete :valores="lineashow" :idselect="'4'" @actualizarvalor="actualizarvalor" :label="'Lineas'"  v-bind:clear="clear"></autocomplete>
-              </v-col>
-              <v-col cols="12" md="4">
-                <btn
-                  margenes="margin-bottom:15px"
-                  fab
-                  small
-                  height="44"
-                  width="44"
-                  color="blue"
-                  texto="Buscar"
-                  textoIcon="mdi-magnify"
-                  v-on:accion="buscar"
-                ></btn>
-                <btn
-                  margenes="margin-left:5px;margin-bottom:15px"
-                  fab
-                  small
-                  height="44"
-                  width="44"
-                  color="success"
-                  texto="Limpiar"
-                  textoIcon="mdi-broom"
-                  v-on:accion="limpiar"
-                ></btn>
+              <v-col cols="12">
+                <v-card
+                  dark
+                >
+                  <v-card-title class="text-h5">
+                    Busqueda de productos
+                  </v-card-title>
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="12" md="4">
+                        <autocomplete :valores="proveedores" :idselect="'1'" @actualizarvalor="actualizarvalor" :label="'Proveedores'" v-bind:clear="clear"></autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <autocomplete :valores="categorias" :idselect="'2'" @actualizarvalor="actualizarvalor" :label="'Categorias'"  v-bind:clear="clear"></autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <autocomplete :valores="marcas" :idselect="'3'" @actualizarvalor="actualizarvalor" :label="'Marcas'"  v-bind:clear="clear"></autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="4" v-if="this.lineashow.length > 0">
+                        <autocomplete :valores="lineashow" :idselect="'4'" @actualizarvalor="actualizarvalor" :label="'Lineas'"  v-bind:clear="clear"></autocomplete>
+                      </v-col>
+                      <v-col cols="12" md="4">
+                        <btn
+                          margenes="margin-bottom:15px"
+                          fab
+                          small
+                          height="44"
+                          width="44"
+                          color="blue"
+                          texto="Buscar"
+                          textoIcon="mdi-magnify"
+                          v-on:accion="buscar"
+                        ></btn>
+                        <btn
+                          margenes="margin-left:5px;margin-bottom:15px"
+                          fab
+                          small
+                          height="44"
+                          width="44"
+                          color="success"
+                          texto="Limpiar"
+                          textoIcon="mdi-broom"
+                          v-on:accion="limpiar"
+                        ></btn>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
               </v-col>
             </v-row>
+
             <v-row>
               <v-col cols="12" md="2">
                 <v-select style="margin-right: 50px;width:"
@@ -74,7 +88,7 @@
               </v-col>
 
             </v-row>
-            <v-simple-table fixed-header style="height: 525px;">
+            <v-simple-table dark fixed-header style="height: 525px;" v-if="produsctoshow.length">
               <thead>
               <tr>
                 <th>Producto</th>
@@ -111,7 +125,7 @@
               </tr>
               </tbody>
             </v-simple-table>
-            <paginate-object :totalpage="totalpage" :cantidadPage="cantidadPage" v-on:cambiopagina="paginacion"></paginate-object>
+            <paginate-object v-if="produsctoshow.length" :totalpage="totalpage" :cantidadPage="cantidadPage" v-on:cambiopagina="paginacion"></paginate-object>
             <v-col cols="auto">
               <v-dialog
                 transition="dialog-bottom-transition"
@@ -159,11 +173,11 @@
 </template>
 
 <script>
-import MaterialCard from '../components/view/MaterialCard.vue'
-import Autocomplete from '../components/Layout/App/Autocomplete'
-import Btn from '../components/Layout/App/Btn'
-import Dialogo from '../components/Layout/App/Dialogo'
-import PaginateObject from '../components/Layout/App/PaginateObject'
+import MaterialCard from '../../components/view/MaterialCard.vue'
+import Autocomplete from '../../components/Layout/App/Autocomplete'
+import Btn from '../../components/Layout/App/Btn'
+import Dialogo from '../../components/Layout/App/Dialogo'
+import PaginateObject from '../../components/Layout/App/PaginateObject'
 import axios from 'axios'
 import { mapMutations, mapState } from 'vuex'
 export default {
@@ -175,7 +189,7 @@ export default {
       msgPopup: "",
       selectbuscar: "producto",
       buscarP: null,
-      produsctoshow : null,
+      produsctoshow : [],
       totalpage: 0,
       cantidadPage: 3,
       page: 1,
@@ -237,8 +251,6 @@ export default {
       }
 
       var pr = [];
-
-      console.log(this.productos)
 
       pr = this.productos.filter(elem =>{
 
@@ -333,12 +345,8 @@ export default {
         })
     },
     limpiar(){
-        this.clear = true
-        this.productos = []
-        this.proveedorid = null
-        this.categoriaid = null
-        this.marcaid = null
-        this.lineaid = null
+        window.location.reload()
+
     },
     catalogos () {
       const url = process.env.VUE_APP_URL_API + '/api/compras'
