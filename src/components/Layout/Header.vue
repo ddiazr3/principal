@@ -25,30 +25,30 @@
 
     <v-spacer />
 
-    <!--search class="hidden-sm-and-down" />
+    <!--search class="hidden-sm-and-down" /!-->
 
-    <go-home />
-
-    <notifications /-->
+    <compras v-if="compra.detalleCompras.length" />
 
     <account />
   </v-app-bar>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import DrawerToggle from './widgets/DrawerToggle'
 import Search from './widgets/Search'
 import GoHome from './widgets/GoHome'
 import Notifications from './widgets/Notifications'
+import Compras from './widgets/Compras'
 import Account from './widgets/Account'
 
 export default {
   components: {
-    DrawerToggle, Search, GoHome, Notifications, Account
+    DrawerToggle, Search, GoHome, Notifications, Account, Compras
   },
 
   computed: {
+    ...mapState('compras',['compra'])
   },
   methods: {
     ...mapMutations('layout', ['drawerMinimizados'])

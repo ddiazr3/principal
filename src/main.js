@@ -8,6 +8,9 @@ import '@mdi/font/css/materialdesignicons.css'
 import VueOnlineProp from "vue-online-prop"
 import CryptoJS from 'crypto-js'
 
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2)
 
 
 //Vue.prototype.$socket = socket // con este le damos un nombre global al socket para acederelo this.$socket

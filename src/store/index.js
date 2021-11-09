@@ -5,6 +5,7 @@ import usuario from '@/modules/Configuracion/usuario'
 import roles from '@/modules/Configuracion/Role'
 import empresa from '@/modules/Configuracion/Empresa'
 import puntoventasinstance from '@/modules/Configuracion/PuntoVentas'
+import compras from '@/modules/Principal/Compras'
 
 //catalogos
 import marca from '@/modules/Catalogos/Marcas'
@@ -48,9 +49,8 @@ export default new Vuex.Store({
                     localStorage.removeItem("validarpath")
                     window.location.href = '/'
 
+
                 })
-
-
         }
     },
     actions: {},
@@ -64,6 +64,7 @@ export default new Vuex.Store({
         linea,
         categoria,
         proveedor,
-        producto
+        producto,
+        compras
     }
 })

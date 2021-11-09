@@ -116,7 +116,7 @@ export default ({
             this.$router.push( { path: '/bienvenida/'+ur })
            // this.$router.go({ path:  ur})
           }else{
-            window.location.href = '/';
+              window.location.href = '/';
           }
 
         })

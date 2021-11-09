@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Principal from '../views/Principal.vue'
+import Ventas from '../views/Ventas.vue'
+import Compras from '../views/Compras.vue'
 
 
 import Login from '../views/Login.vue'
@@ -72,6 +74,22 @@ const routes = [{
         meta: {
             requiresAuth: true
         }
+    },
+    {
+      path: '/ventas',
+      name: 'ventas',
+      component: Ventas,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/compras',
+      name: 'compras',
+      component: Compras,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
         path: '/configuracion',
@@ -355,7 +373,7 @@ router.beforeEach((to, from, next) => {
                     if (tiene_permiso.length <= 0) {
                         next({ name: modulo_usuario[0][0] })
                     } else {
-                        next()
+                         next()
                     }
                 }
             }
