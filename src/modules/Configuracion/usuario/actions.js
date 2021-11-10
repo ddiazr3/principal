@@ -18,6 +18,10 @@ export async function getUsuarios({ commit }, buscar) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }
@@ -41,6 +45,10 @@ export async function getUsuario({ commit }, id) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
     commit('setUsuario', id)
@@ -60,6 +68,10 @@ export async function getCatalogos({ commit }) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         }).finally(
             commit('setLoading', false, { root: true })

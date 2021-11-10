@@ -96,9 +96,6 @@ export default ({
         // submit form to server/API here...
         const url = process.env.VUE_APP_URL_API + '/api/usuarios/login'
         this.setLoading(true)
-
-        console.log("pass "+url)
-
          axios.post(url,{
            password : this.loginPassword,
            correo: this.loginEmail
@@ -121,11 +118,15 @@ export default ({
 
         })
         .catch((e) => {
-           console.log(e)
           this.dialogoPopup= true
           this.colorPopup= "error"
           this.titlePopup= "Aviso.."
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
           this.msgPopup= e.response.data.message
+
         }).finally((e) => {
           this.setLoading(false)
         })
@@ -151,6 +152,10 @@ export default ({
             this.dialogoPopup= true
             this.colorPopup= "error"
             this.titlePopup= "Aviso.."
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             this.msgPopup= e.response.data.message
         }).finally((e) => {
           this.setLoading(false)

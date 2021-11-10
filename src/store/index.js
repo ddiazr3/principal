@@ -41,7 +41,12 @@ export default new Vuex.Store({
 
             axios.post(url)
                 .then((response) => {})
-                .catch((e) => {}).finally((e) => {
+                .catch((e) => {
+                  if(e.response.status == 500){
+                    this.msgPopup= "Comunicarse con su administrador."
+                    return
+                  }
+                }).finally((e) => {
 
                 }).finally((f) => {
                     localStorage.removeItem("bool")

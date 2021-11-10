@@ -15,6 +15,10 @@ export async function getLineas({ commit }, buscar) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+            if(e.response.status == 500){
+              this.msgPopup= "Comunicarse con su administrador."
+              return
+            }
             throw e;
         })
 }
@@ -34,6 +38,10 @@ export async function getLinea({ commit }, id) {
             if (e.response.status == 401) {
                 commit('errorCatch', true, { root: true })
                 return
+            }
+            if(e.response.status == 500){
+              this.msgPopup= "Comunicarse con su administrador."
+              return
             }
             throw e;
         })
@@ -60,6 +68,10 @@ export async function getCatalogos({ commit }) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         }).finally(
             commit('setLoading', false, { root: true })

@@ -68,6 +68,7 @@
                   <tr>
                     <th class="text-left">Nombre</th>
                     <th class="text-left">Apellidos</th>
+                    <th class="text-left">Correo</th>
                     <th class="text-left">Telefono</th>
                     <th class="text-left">Dirección</th>
                     <th class="text-left">Roles</th>
@@ -78,6 +79,7 @@
                  <tr v-for="dato in usuarios" :key="dato.id">
                     <td class="text-left">{{ dato.nombre }}</td>
                     <td class="text-left">{{ dato.apellido }}</td>
+                   <td class="text-left">{{ dato.correo }}</td>
                     <td class="text-left">{{ dato.telefono }}</td>
                     <td class="text-left">{{ dato.direccion }}</td>
                     <td class="text-left">
@@ -267,8 +269,10 @@ export default {
             fileLink.click();
       }).
         catch((error) => {
-        console.log("reporno del api error")
-        console.log(error)
+        if(error.response.status == 500){
+          this.msgPopup= "Comunicarse con su administrador."
+          return
+        }
       })
     },
     disabledTest(){

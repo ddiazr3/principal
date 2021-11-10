@@ -191,7 +191,7 @@ export default {
       buscarP: null,
       produsctoshow : [],
       totalpage: 0,
-      cantidadPage: 3,
+      cantidadPage: 10,
       page: 1,
       proveedores : [],
       categorias: [],
@@ -341,6 +341,10 @@ export default {
             this.$store.commit("errorCatch", true)
             return
           }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
           throw e;
         })
     },
@@ -360,6 +364,10 @@ export default {
         .catch((e) => {
           if (e.response.status == 401) {
             this.$store.commit("errorCatch", true)
+            return
+          }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
             return
           }
           throw e;

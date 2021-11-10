@@ -15,6 +15,10 @@ export async function getMarcas({ commit }, buscar) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+            if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }
@@ -35,6 +39,10 @@ export async function getMarca({ commit }, id) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }

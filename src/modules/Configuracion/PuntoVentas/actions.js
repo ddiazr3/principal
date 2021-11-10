@@ -16,6 +16,10 @@ export async function getPuntoVentas({ commit }, buscar) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }
@@ -36,6 +40,10 @@ export async function getPuntoVenta({ commit }, id) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }

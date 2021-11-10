@@ -81,6 +81,10 @@ export default {
             this.dialogoPopup= true
             this.colorPopup= "error"
             this.titlePopup= "Aviso.."
+            if(e.response.status == 500){
+              this.msgPopup= "Comunicarse con su administrador."
+              return
+            }
             this.msgPopup= e.response.data.message
           }).finally((e) => {
           this.setLoading(false)

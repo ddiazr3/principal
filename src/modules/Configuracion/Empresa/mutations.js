@@ -19,11 +19,12 @@ export function setEmpresa(state, empresa) {
     state.empresa.tienesucursal = empresa.tienesucursal
     state.empresa.cantidadsucursal = empresa.cantidadsucursal
     state.empresa.punto_ventas = empresa.puntoventas
-    state.empresa.bodega.id = empresa.bodega.id
-    state.empresa.bodega.nombre = empresa.bodega.nombre
-    state.empresa.bodega.direccion = empresa.bodega.direccion
-    state.empresa.bodega.telefono = empresa.bodega.telefono
-    state.empresa.bodega.igualempresa = empresa.bodega.igualempresa
+
+    state.empresa.bodega.id = empresa.bodega ? empresa.bodega.id : null
+    state.empresa.bodega.nombre = empresa.bodega ? empresa.bodega.nombre : null
+    state.empresa.bodega.direccion = empresa.bodega ? empresa.bodega.direccion : null
+    state.empresa.bodega.telefono = empresa.bodega ? empresa.bodega.telefono : null
+    state.empresa.bodega.igualempresa = empresa.bodega ? empresa.bodega.igualempresa : null
 }
 
 export function datosIguales(state, value) {

@@ -294,6 +294,10 @@ export default {
                 if (e.response.status == 401) {
                   return
                 }
+              if(e.response.status == 500){
+                this.msgPopup= "Comunicarse con su administrador."
+                return
+              }
                 throw e;
             })
     },
@@ -304,7 +308,10 @@ export default {
             this.lineas = response.data
         })
         .catch((e) => {
-
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
     }

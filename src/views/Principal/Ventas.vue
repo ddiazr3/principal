@@ -90,6 +90,17 @@
                 >
                   <v-card-title class="text-h5">
                     Detalle de la compra
+                    <btn
+                      margenes="margin-left: 15px"
+                      fab
+                      small
+                      height="44"
+                      width="44"
+                      color="warning"
+                      texto="Cancelar Venta"
+                      textoIcon="mdi-close-circle-outline"
+                      v-on:accion="cancelarVenta"
+                    ></btn>
                   </v-card-title>
                   <v-card-text>
                     <v-row>
@@ -242,6 +253,22 @@ export default {
         }
       })
     },
+    cancelarVenta(){
+      this.$swal({
+        title: 'Seguro de cancelar la compra?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si!',
+        cancelButtonText: 'No'
+      }).then((result) => {
+        if(result.isConfirmed){
+            this.clearVenta()
+            this.limpiar()
+        }
+      })
+    },
     pagar () {
       this.$swal({
         title: 'Seguro de confirmar la compra?',
@@ -262,6 +289,10 @@ export default {
             .catch((e) => {
               if (e.response.status == 401) {
                 this.$store.commit("errorCatch", true)
+                return
+              }
+              if(e.response.status == 500){
+                this.msgPopup= "Comunicarse con su administrador."
                 return
               }
               throw e;
@@ -287,6 +318,10 @@ export default {
         .catch((e) => {
           if (e.response.status == 401) {
             this.$store.commit("errorCatch", true)
+            return
+          }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
             return
           }
           throw e;

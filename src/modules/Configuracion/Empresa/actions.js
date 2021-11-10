@@ -15,6 +15,10 @@ export async function getEmpresas({ commit }, buscar) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }
@@ -31,14 +35,18 @@ export async function getEmpresa({ commit }, id) {
     const url = process.env.VUE_APP_URL_API + '/api/empresas/' + id + '/edit';
     axios.get(url)
         .then((response) => {
-            console.log(response.data)
             commit('setEmpresa', response.data)
         })
         .catch((e) => {
+            console.log(e)
             if (e.response.status == 401) {
                 commit('errorCatch', true, { root: true })
                 return
             }
+          if(e.response.status == 500){
+            this.msgPopup= "Comunicarse con su administrador."
+            return
+          }
             throw e;
         })
 }

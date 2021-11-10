@@ -166,11 +166,15 @@ export default {
 
          this.saveCompra(this.compra).
          then((res) => {
-           this.clearCompra()
+           window.location.reload()
          })
            .catch((e) => {
              if (e.response.status == 401) {
                this.$store.commit("errorCatch", true)
+               return
+             }
+             if(e.response.status == 500){
+               this.msgPopup= "Comunicarse con su administrador."
                return
              }
              throw e;
