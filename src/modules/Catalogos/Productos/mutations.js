@@ -3,8 +3,8 @@ import { find, filter } from 'lodash'
 export function setProductos(state, response) {
     state.permisosProductos = response.data.permisos
     state.productos = response.data.productos.data
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.productos.last_page
+    state.page = response.data.productos.current_page
 }
 
 export function setProducto(state, producto) {

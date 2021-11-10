@@ -3,8 +3,8 @@ import { find, filter } from 'lodash'
 export function setUsuarios(state, response) {
     state.usuarios = response.data.usuarios.data
     state.permisosUsuarios = response.data.permisos
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.usuarios.last_page
+    state.page = response.data.usuarios.current_page
 }
 
 export function setUsuario(state, usuario ) {

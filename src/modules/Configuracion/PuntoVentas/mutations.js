@@ -4,8 +4,8 @@ export function setPuntoVentas(state, response) {
 
     state.permisospuntoventas = response.data.permisos
     state.puntoventas = response.data.puntoventas.data
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.puntoventas.last_page
+    state.page = response.data.puntoventas.current_page
 }
 
 export function setPuntoVenta(state, puntoventa) {

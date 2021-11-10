@@ -3,8 +3,8 @@ import { find, filter } from 'lodash'
 export function setCategorias(state, response) {
     state.permisosCategorias = response.data.permisos
     state.categorias = response.data.categorias.data
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.categorias.last_page
+    state.page = response.data.categorias.current_page
 }
 
 export function setCategoria(state, categoria) {

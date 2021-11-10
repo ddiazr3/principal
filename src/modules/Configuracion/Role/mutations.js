@@ -3,8 +3,8 @@ import { find, filter } from 'lodash'
 export function setRoles(state, response) {
     state.permisosRoles= response.data.permisos
     state.roles = response.data.roles.data
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.roles.last_page
+    state.page = response.data.roles.current_page
 }
 
 export function setRole(state, role ) {

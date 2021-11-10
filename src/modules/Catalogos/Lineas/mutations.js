@@ -3,8 +3,8 @@ import { find, filter } from 'lodash'
 export function setLineas(state, response) {
     state.permisosLineas = response.data.permisos
     state.lineas = response.data.lineas.data
-    state.totalPage = response.data.last_page
-    state.page = response.data.current_page
+    state.totalPage = response.data.lineas.last_page
+    state.page = response.data.lineas.current_page
 }
 
 export function setLinea(state, linea) {
