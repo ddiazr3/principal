@@ -15,17 +15,21 @@
             v-bind="attrs"
             v-on="on"
           >
-            <v-icon>mdi-comment-question</v-icon>
+            <v-icon v-if="icondiferent">{{ icon }}</v-icon>
+            <v-icon v-else>mdi-comment-question</v-icon>
           </v-btn>
         </template>
 <!--          <span>Formato del Archivo</span>-->
 <!--        </v-tooltip>-->
 
         <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
+          <v-card-title class="text-h5 grey lighten-2" v-if="titlediferent">
             Formato para {{ title }}
           </v-card-title>
 
+          <v-card-title class="text-h5 grey lighten-2" v-else>
+            {{ title }}
+          </v-card-title>
           <v-card-text style="margin-top: 15px">
             <v-simple-table dense>
               <thead>
@@ -75,6 +79,18 @@ export default({
     body: {
       type: Array,
       default: []
+    },
+    titlediferent: {
+      type: Boolean,
+      default : false
+    },
+    icondiferent: {
+      type: Boolean,
+      default: false
+    },
+    icon: {
+      type: String,
+      default: "mdi-comment-question"
     }
   },
   data: () => ({

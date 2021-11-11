@@ -10,6 +10,7 @@ import Contrasenia from '../views/Contrasenia.vue'
 import Bienvenida from '../views/Bienvenida.vue'
 import Configuracion from '../views/Configuracion/Configuracion.vue'
 import Catalogos from '../views/Catalogos/Catalogos.vue'
+import Reportes from '../views/Reportes/Reportes'
 
 // rutas de usuarios
 import ListUser from '../views/Configuracion/Usuario/List.vue'
@@ -47,8 +48,13 @@ import CreateProveedores from '../views/Catalogos/Proveedores/Create.vue'
 import ListProductos from '../views/Catalogos/Productos/List.vue'
 import CreateProductos from '../views/Catalogos/Productos/Create.vue'
 
+// ruta para los reportes
+import VentasReporte from '../views/Reportes/Ventas'
+import ComprasReporte from '../views/Reportes/Compras'
 
 import CryptoJS from 'crypto-js'
+
+
 
 Vue.use(VueRouter)
 
@@ -90,6 +96,28 @@ const routes = [{
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/reportes',
+      component: Reportes,
+      children: [
+          {
+            path: 'compras',
+            component: ComprasReporte,
+            name: 'compras',
+            meta: {
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'ventas',
+            component: VentasReporte,
+            name: 'ventas',
+            meta: {
+              requiresAuth: true
+            }
+          }
+      ]
     },
     {
         path: '/configuracion',
